@@ -6,13 +6,13 @@ const AllUser = () => {
     const user = {name: 'Adrian'}
 
    return (
-    <section className="dashboard-wrapper">
+    <section className="all-users-wrapper">
        <Header
-               title={`Welcome ${user?.name ?? 'Guest'}`}
-               description="Check out our current user in real time"
+               title='Manage Users'
+               description="Filter sort, and access detailed user profiles"
              />
             
-        Dashboard
+               
     </section>
    )
 }
