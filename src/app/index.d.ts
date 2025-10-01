@@ -60,18 +60,18 @@ declare interface Trip {
   name: string;
   description: string;
   estimatedPrice: string;
-  duration: number;
-  budget: string;
+  // duration: number;
+  // budget: string;
   travelStyle: string;
-  interests: string;
-  groupType: string;
-  country: string;
+  // interests: string;
+  // groupType: string;
+  // country: string;
   imageUrls: string[];
   itinerary: DayPlan[];
-  bestTimeToVisit: string[];
-  weatherInfo: string[];
-  location: Location;
-  payment_link: string;
+  // bestTimeToVisit: string[];
+  // weatherInfo: string[];
+  // location: Location;
+  // payment_link: string;
 }
 
 declare interface TripCardProps {

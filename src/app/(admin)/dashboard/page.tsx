@@ -45,12 +45,11 @@ const Dashboard = () => {
                 lastMonthCount={userRole.lastMonth}
                 /> 
           </div>
-         </section>
 
          <section className="container">
-                  <h1 className="text-xl font-semibold text-dark-100">Created Trips</h1>
+                  <h1 className="text-xl font-semibold text-dark-100 my-1">Created Trips</h1>
 
-                <div className="tripe-grid">
+                <div className="trip-grid">
                  {allTrips.slice(0, 4).map(({id, name, imageUrls, itinerary, tags, estimatedPrice}) => (
                   <TripCard 
                    key={id}
@@ -58,11 +57,12 @@ const Dashboard = () => {
                    name={name}
                    imageUrl={imageUrls[0]}  
                    location={itinerary?.[0]?.location ?? ''}
-                   tag={tags}
+                   tags={tags}
                    price={estimatedPrice}
                        />
                  ))}
                 </div>
+         </section>
          </section>
       
     </div>
