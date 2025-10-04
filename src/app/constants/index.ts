@@ -19,6 +19,41 @@ export const sidebarItems = [
   },
 ];
 
+ export const imageGallery1 = [
+  {
+    imageUrls: ["/assets/images/sample1.jpg"],
+    id: 1,
+    name: 'image1'
+ },
+  {
+    imageUrls: ["/assets/images/sample2.jpg"],
+    id: 2,
+    name: 'image2'
+ },
+  {
+    imageUrls: ["/assets/images/sample3.jpg"],
+    id: 3,
+    name: 'image2'
+ },
+   ]
+
+   export const imageGallery2 = [
+    {
+    imageUrls: ["/assets/images/card-img-1.png"],
+    id: 1,
+    name: 'image1'
+ },
+  {
+    imageUrls: ["/assets/images/card-img-2.png"],
+    id: 2,
+    name: 'image2'
+ },
+  {
+    imageUrls: ["/assets/images/card-img-4.png"],
+    id: 3,
+    name: 'image3'
+ }
+   ]
   export const allTrips = [{
       id: 1,
       name: "Tropical Rewind",
@@ -54,6 +89,42 @@ export const sidebarItems = [
       tags: ["Historical", "Culture"],
       travelStyle: "Friends",
       estimatedPrice: "$4,000",
+    },
+    {
+      id: 5,
+      name: "Adventure in Westeros",
+      imageUrls: ["/assets/images/sample4.jpg"],
+      itinerary: [{ location: "Croatia" }],
+      tags: ["Historical", "Culture"],
+      travelStyle: "Friends",
+      estimatedPrice: "$4,000",
+    },
+    {
+      id: 6,
+      name: "Zen Break",
+      imageUrls: ["/assets/images/sample3.jpg"],
+      itinerary: [{ location: "Japan" }],
+      tags: ["Shopping", "Luxury"],
+      travelStyle: "Couple",
+      estimatedPrice: "$3,000",
+    },
+    {
+      id: 7,
+      name: "Adventure in Westeros",
+      imageUrls: ["/assets/images/sample4.jpg"],
+      itinerary: [{ location: "Croatia" }],
+      tags: ["Historical", "Culture"],
+      travelStyle: "Friends",
+      estimatedPrice: "$4,000",
+    },
+    {
+      id: 8,
+      name: "French Reverie",
+      imageUrls: ["/assets/images/sample2.jpg"],
+      itinerary: [{ location: "Paris" }],
+      tags: ["Relaxation", "Culinary"],
+      travelStyle: "Family",
+      estimatedPrice: "$2,000",
     },
     ];
 

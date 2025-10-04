@@ -15,7 +15,7 @@ const NavItems = () => {
     }
 
   return (
-    <section className='nav-items bg-white'>
+    <section className='nav-items bg-white fixed'>
         <Link href='/' className='link-logo'>
             <Image src="/assets/icons/logo.svg" alt='logo' className='size-[30px]' width={24} height={24}/>
              <h1>Tourvisto</h1>
@@ -26,7 +26,7 @@ const NavItems = () => {
               {sidebarItems.map(({id, href, icon, label}) => (
                   <Link key={id} href={href}>
                      <div className={`group nav-item ${pathname === href ? 'bg-primary-100 !text-white' : ''}`}>
-                         <Image src={icon} alt={label} className={`group-hover:brightness-0 size-0 group-hover:invert ${pathname === href ? 'brightness-0 invert' : ''}`} width={24} height={24}/>
+                         <Image src={icon} alt={label} className={`group-hover:brightness-0 size- group-hover:invert ${pathname === href ? 'brightness-0 invert' : ''}`} width={24} height={24}/>
                          {label}
                      </div>
                   </Link>
