@@ -2,33 +2,47 @@
 import { ComboBox, Header } from "@/app/components" 
 import { comboBoxItems, selectItems } from "@/app/constants"
 import { formatKey } from "@/app/lib/utils"
-import { useState } from "react"
+import { useState, useEffect} from "react"
 import Image from 'next/image'
 import { ComboboxOption } from "@/app/components/ComboBox"
+import {useAuthStore} from '@/app/store'
 
 const CreateTrip = () => {
 
     const [error, setError] = useState<string | null>(null)
     const [loading, setLoading] = useState<boolean>(false)
+    const [countries, setCountries] = useState([])
+    // const {user} = useAuthStore()
 
+    //  console.log({user})
     
+    //  useEffect(() => {
+       
+    //   const loader = async () => {
 
-    //  export const loader = async () => {
     //      const response = await fetch('https://restcountries.com/v3.1/all')
 
     //      const data = await response.json()
+
+    //      setCountries(data)
+
     //      console.log(data)
 
-    //      return data.map((country) => ({
-    //    name: country.flag + country.name.common,
-    //    coordinates: country.lating,
+    //      return countries.map((country: any) => ({
+    //     label: country.flag + country.name.common,
+    //     coordinates: country.lating,
     //     value: country.name.common,
     //     openStreetMap: country.maps?.openStreetMap
     // }))
     //  }
 
+    //  loader()
+
+    //  }, [])
+      
+
     const [formData, setFormData] = useState<TripFormData>({
-      // country: countries[0]?.name || '',
+      // country: countries[0]?.label || '',
       travelStyle: '',
       interest: '',
       budget: '',

@@ -4,6 +4,10 @@ import Link from "next/link"
 
 const SignIn = () => {
 
+  const handleLogin = () => {
+  window.location.href = "http://localhost:3000/auth/google/login";
+};
+
    return (
      <div className="auth">
         <section className="size-full glassmorphism flex-center px-6">
@@ -26,7 +30,7 @@ const SignIn = () => {
                  <p className="p-18-regular text-center text-gray-100 !leading-7">Sign in with Google to manage destinations, itineraties, and user activity with ease</p>
                </article>
 
-               <button className="button-class !h-11 !w-full" onClick={() => {}}>
+               <button className="button-class !h-11 !w-full cursor-pointer" onClick={handleLogin}>
                      <Image 
                        src="/assets/icons/google.svg"
                         alt="google"

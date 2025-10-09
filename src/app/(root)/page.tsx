@@ -5,6 +5,9 @@ import { cn } from "@/lib/utils"
 import {imageGallery1, imageGallery2} from "@/app/constants"
  import {TripCard} from "@/app/components"
 import {allTrips} from "@/app/constants"
+import { useEffect } from "react"
+import { useAuthStore } from "../store"
+import { useRouter } from "next/navigation"
 
 const Home = () => {
 
@@ -13,6 +16,41 @@ const Home = () => {
       email: 'durupristine@gmail.com',
       imageUrl: '/assets/images/david.webp'
     }
+
+    const router = useRouter()
+
+    const { setUser } = useAuthStore();
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get("token");
+
+    if (!token) {
+      router.push("/sign-in");
+      return;
+    }
+
+    const fetchUser = async () => {
+      try {
+        const res = await fetch("http://localhost:3000/auth/me", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (!res.ok) throw new Error("Failed to fetch user");
+
+        const user = await res.json();
+        setUser(user, token);
+        router.push("/dashboard");
+      } catch (error) {
+        console.error("Error:", error);
+        router.push("/sign-in");
+      }
+    };
+
+    
+    fetchUser();
+  }, [router, setUser]);
+
 
   return (
     <>

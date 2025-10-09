@@ -1,4 +1,4 @@
-import { Header } from '@/app/components'
+import { Header, MapBox } from '@/app/components'
 
 
 const AllUser = () => {
@@ -11,7 +11,7 @@ const AllUser = () => {
                title='Manage Users'
                description="Filter sort, and access detailed user profiles"
              />
-            
+            <MapBox/>
                
     </section>
    )
