@@ -5,7 +5,7 @@ import Link from "next/link"
 const SignIn = () => {
 
   const handleLogin = () => {
-  window.location.href = "http://localhost:3000/auth/google/login";
+  window.location.href = "http://localhost:4000/auth/google/login";
 };
 
    return (

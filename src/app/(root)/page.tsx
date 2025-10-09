@@ -11,45 +11,43 @@ import { useRouter } from "next/navigation"
 
 const Home = () => {
 
-   const user = {
-      name: 'Duru Pristine',
-      email: 'durupristine@gmail.com',
-      imageUrl: '/assets/images/david.webp'
-    }
+  //  const user = {
+  //     name: 'Duru Pristine',
+  //     email: 'durupristine@gmail.com',
+  //     imageUrl: '/assets/images/david.webp'
+  //   }
 
     const router = useRouter()
 
-    const { setUser } = useAuthStore();
+    const { setUser, user } = useAuthStore();
 
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get("token");
-
-    if (!token) {
-      router.push("/sign-in");
-      return;
-    }
-
-    const fetchUser = async () => {
-      try {
-        const res = await fetch("http://localhost:3000/auth/me", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        if (!res.ok) throw new Error("Failed to fetch user");
-
-        const user = await res.json();
-        setUser(user, token);
-        router.push("/dashboard");
-      } catch (error) {
-        console.error("Error:", error);
-        router.push("/sign-in");
-      }
-    };
-
-    
-    fetchUser();
-  }, [router, setUser]);
+    useEffect(() => {
+      // ✅ Initialize from localStorage on first render
+  
+      const urlParams = new URLSearchParams(window.location.search);
+      const token = urlParams.get("token");
+  
+      if (!token) return; // No token, skip fetching
+  
+      const fetchUser = async () => {
+        try {
+          const res = await fetch("http://localhost:4000/auth/me", {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+  
+          if (!res.ok) throw new Error("Failed to fetch user");
+  
+          const user = await res.json();
+          setUser(user, token);
+          router.push("/dashboard");
+        } catch (error) {
+          console.error("Error:", error);
+          router.push("/sign-in");
+        }
+      };
+  
+      fetchUser();
+    }, [router, setUser]);
 
 
   return (
@@ -65,9 +63,9 @@ const Home = () => {
                               
                 
                               <article className="flex flex-col gap-2 max-w-[115px]">
-                                <h2 className="text-sm md:text-base font-semibold text-black truncate hover:text-gray-100">{user?.name}</h2>
+                                <h2 className="text-sm md:text-base font-semibold text-black truncate hover:text-gray-100">{user?.username}</h2>
                               </article>
-                              <Image src={user.imageUrl} width={24} height={24} alt={user.name} className="size-10 rounded-full aspect-square"/>
+                              {/* <Image src={`${user?.profileUrl ? user?.profileUrl : '/assets/images/david.webp'} `} width={24} height={24} alt={user?.username} className="size-10 rounded-full aspect-square"/> */}
                               <button onClick={() => {console.log('Logout')}} className="cursor-pointer">
                                 <Image src="/assets/icons/logout.svg"
                                   alt="logout"

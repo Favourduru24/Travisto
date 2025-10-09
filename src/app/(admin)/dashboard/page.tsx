@@ -1,7 +1,9 @@
+'use client'
 import { Header, TripCard} from '@/app/components'
 import StatCard from '@/app/components/StatCard'
-
+import {useAuthStore} from '@/app/store'
 import {allTrips} from "@/app/constants"
+import {useState, useEffect} from 'react'
 
 const Dashboard = () => {
 
@@ -16,12 +18,21 @@ const Dashboard = () => {
    }
 
    const {totalUsers, usersJoined, totalTrips, tripCreated, userRole} =  dashboardStat
-  
-   const user = {name: 'Pristine'}
+   const { setUser, user, hydrate } = useAuthStore();
+   const [isReady, setIsReady] = useState(false);
+
+  //  useEffect(() => {
+  //    hydrate(); // loads data from localStorage
+  //    setIsReady(true);
+  //  }, [hydrate]);
+  //  const user = {name: 'Pristine'}
+
+   console.log(user)
+
   return (
     <div className="dashnoard wrapper">
       <Header
-        title={`Welcome ${user?.name ?? 'Guest'}`}
+        title={`Welcome ${user?.username}`}
         description="Track activity, trends and popular destinations in real time"
       />
          <section className="flex flex-col gap-6">
