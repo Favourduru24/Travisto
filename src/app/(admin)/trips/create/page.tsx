@@ -13,52 +13,49 @@ const CreateTrip = () => {
 
     const [error, setError] = useState<string | null>(null)
     const [loading, setLoading] = useState<boolean>(false)
-    const [countries, setCountries] = useState([])
-    const router = useRouter()
-
-    const {user} = useAuthStore()
-
-    //  console.log({user})
+    const [countries, setCountries] = useState<any>([])
     
-    //  useEffect(() => {
-       
-    //   const loader = async () => {
-
-    //      const response = await fetch('https://restcountries.com/v3.1/all')
-
-    //      const data = await response.json()
-
-    //      setCountries(data)
-
-    //      console.log(data)
-
-    //      return countries.map((country: any) => ({
-    //     label: country.flag + country.name.common,
-    //     coordinates: country.lating,
-    //     value: country.name.common,
-    //     openStreetMap: country.maps?.openStreetMap
-    // }))
-    //  }
-
-    //  loader()
-
-    //  }, [])
-      
-
     const [formData, setFormData] = useState<TripFormData>({
-      // country: countries[0]?.label || '',
+      country: countries[0]?.label || '',
       travelStyle: '',
       interest: '',
       budget: '',
       duration: 0,
       groupType: ''
     })
+    const router = useRouter()
+    const {user} = useAuthStore()
 
-     const handleSubmit = async (e) => {
+     useEffect(() => {
+       
+      const loader = async () => {
+
+         const response = await fetch('https://restcountries.com/v3.1/all')
+
+         const data = await response.json()
+
+         setCountries(data)
+
+         console.log(data)
+
+         return countries.map((country: any) => ({
+        label: country.flag + country.name.common,
+        coordinates: country.lating,
+        value: country.name.common,
+        openStreetMap: country.maps?.openStreetMap
+    }))
+     }
+
+     loader()
+
+     }, [])
+
+     const handleSubmit = async (e: any) => {
       e.preventDefault()
+
       try {
         
-        const newTrip = await createTrip(formData)
+        const newTrip = await createTrip({data: {formData, userId: user.userId}})
 
          if(newTrip && newTrip?.success) {
           router.push('/dashboard')
@@ -67,19 +64,10 @@ const CreateTrip = () => {
          }
 
       } catch(error) {
-         console.error('Something went wrong to create trip.')
+         console.error('Something went wrong to create trip.', error)
       }
 
      }
-
-    const options = [
-    { value: '1', label: 'Apple' },
-    { value: '2', label: 'Banana' },
-    { value: '3', label: 'Orange' },
-    { value: '4', label: 'Grape' },
-    { value: '5', label: 'Strawberry' },
-    { value: '6', label: 'Blueberry' },
-  ];
 
     const handleChange = (key: keyof TripFormData, value: string | number) => {
          setFormData({...formData, [key]: value})
@@ -99,7 +87,7 @@ const CreateTrip = () => {
              Country
           </label>
            <ComboBox
-              options={options}
+              options={countries}
               placeholder="Select a Country"
               onSelect={(e: {value: string | undefined}) => {
                          if(e.value) {

@@ -55,6 +55,13 @@ declare interface Location {
   openStreetMap: string;
 }
 
+declare interface UserInfo {
+  userId: number;
+  email: string
+  username: string;
+  profileUrl: string
+}
+
 declare interface Trip {
   id: string;
   name: string;

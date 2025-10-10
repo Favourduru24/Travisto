@@ -5,7 +5,7 @@ import { persist } from "zustand/middleware";
 
 // Define your User interface
 export interface User {
-  id: number;
+  userId: number;
   email: string;
   username: string;
   profileUrl?: string;
