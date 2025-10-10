@@ -6,13 +6,17 @@ import { useState, useEffect} from "react"
 import Image from 'next/image'
 import { ComboboxOption } from "@/app/components/ComboBox"
 import {useAuthStore} from '@/app/store'
+import { useRouter } from "next/navigation"
+import {createTrip} from "@/app/service/trip-service"
 
 const CreateTrip = () => {
 
     const [error, setError] = useState<string | null>(null)
     const [loading, setLoading] = useState<boolean>(false)
     const [countries, setCountries] = useState([])
-    // const {user} = useAuthStore()
+    const router = useRouter()
+
+    const {user} = useAuthStore()
 
     //  console.log({user})
     
@@ -50,9 +54,21 @@ const CreateTrip = () => {
       groupType: ''
     })
 
-     const handleSubmit = (e) => {
+     const handleSubmit = async (e) => {
       e.preventDefault()
-       console.log({formData})
+      try {
+        
+        const newTrip = await createTrip(formData)
+
+         if(newTrip && newTrip?.success) {
+          router.push('/dashboard')
+         } else {
+           throw new Error('Failed to create new trip.')
+         }
+
+      } catch(error) {
+         console.error('Something went wrong to create trip.')
+      }
 
      }
 
