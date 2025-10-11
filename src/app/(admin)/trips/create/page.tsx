@@ -7,55 +7,68 @@ import Image from 'next/image'
 import { ComboboxOption } from "@/app/components/ComboBox"
 import {useAuthStore} from '@/app/store'
 import { useRouter } from "next/navigation"
-import {createTrip} from "@/app/service/trip-service"
+import {createTrip, getUserTrips} from "@/app/service/trip-service"
 
 const CreateTrip = () => {
 
     const [error, setError] = useState<string | null>(null)
     const [loading, setLoading] = useState<boolean>(false)
     const [countries, setCountries] = useState<any>([])
+    const [trip, setTrips] = useState<any[]>([])
     
     const [formData, setFormData] = useState<TripFormData>({
       country: countries[0]?.label || '',
       travelStyle: '',
-      interest: '',
+      interests: '',
       budget: '',
-      duration: 0,
+      numberOfDays: 0,
       groupType: ''
     })
     const router = useRouter()
     const {user} = useAuthStore()
 
-     useEffect(() => {
-       
-      const loader = async () => {
+      useEffect(() => {
+    const loader = async () => {
+      const response = await fetch(
+        "https://restcountries.com/v3.1/all?fields=name,flags,latlng,maps"
+      );
+      const data = await response.json();
 
-         const response = await fetch('https://restcountries.com/v3.1/all')
-
-         const data = await response.json()
-
-         setCountries(data)
-
-         console.log(data)
-
-         return countries.map((country: any) => ({
-        label: country.flag + country.name.common,
-        coordinates: country.lating,
+      // Format the data before saving
+      const formatted = data.map((country: any) => ({
+        label: `${country.name.common}`, // optional emoji or flag image if needed
+        flag: country.flags?.png,
+        coordinates: country.latlng, // [lat, lng]
         value: country.name.common,
-        openStreetMap: country.maps?.openStreetMap
-    }))
-     }
+        openStreetMap: country.maps?.openStreetMaps,
+      }));
 
-     loader()
+      setCountries(formatted);
+    };
 
-     }, [])
+    loader();
+  }, []);
+
+   useEffect(() => {
+    if (!user) return;
+
+    const fetchTrips = async () => {
+      const res = await getUserTrips(user.userId);
+      setTrips(res);
+    };
+
+    fetchTrips();
+  }, [user]);
+
+  console.log({trip})
+
 
      const handleSubmit = async (e: any) => {
       e.preventDefault()
 
       try {
         
-        const newTrip = await createTrip({data: {formData, userId: user.userId}})
+        const newTrip = await createTrip({ data: { formData, userId: user.userId } })
 
          if(newTrip && newTrip?.success) {
           router.push('/dashboard')
@@ -67,7 +80,10 @@ const CreateTrip = () => {
          console.error('Something went wrong to create trip.', error)
       }
 
+
      }
+
+     console.log(user.userId)
 
     const handleChange = (key: keyof TripFormData, value: string | number) => {
          setFormData({...formData, [key]: value})
@@ -97,14 +113,14 @@ const CreateTrip = () => {
             />
           </div>
           <div>
-            <label htmlFor="duration">
-              Duration
+            <label htmlFor="numberOfDays">
+              numberOfDays
             </label>
           <input
-             id="duration"
-             name="duration"
+             id="numberOfDays"
+             name="numberOfDays"
              placeholder="Enter a number of days (5, 12 ...3)"
-             className="w-full h-[50px] px-3 py-2 border rounded-lg shadow-sm focus:outline-none  text-gray-500 placeholder:text-gray-100" onChange={(e) => handleChange('duration', Number(e.target.value))}
+             className="w-full h-[50px] px-3 py-2 border rounded-lg shadow-sm focus:outline-none  text-gray-500 placeholder:text-gray-100" onChange={(e) => handleChange('numberOfDays', Number(e.target.value))}
           />
           </div>
 
@@ -112,7 +128,7 @@ const CreateTrip = () => {
             <div key={key}>
                 <label htmlFor={key}>{formatKey(key)}</label>
                   <ComboBox
-                    options={comboBoxItems[key].map((item) => ({value: item, label: item}))}
+                    options={comboBoxItems[key]?.map((item) => ({value: item, label: item}))}
                     placeholder={`Select ${formatKey(key)}`}
                     onSelect={(e: {value: string | undefined | null}) => {
                          if(e.value) {

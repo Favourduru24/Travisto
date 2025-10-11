@@ -69,7 +69,7 @@ const Home = () => {
                               <button onClick={() => {console.log('Logout')}} className="cursor-pointer">
                                 <Image src="/assets/icons/logout.svg"
                                   alt="logout"
-                                  className="size-9 bg-gray-50/20 rounded-full hover:bg-white p-1"
+                                  className="size-9 hover:bg-gray-50/20 rounded-full bg-white p-1"
                                   width={24}
                                   height={24}
                                 />
