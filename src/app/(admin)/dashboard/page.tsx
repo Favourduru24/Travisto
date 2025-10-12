@@ -4,6 +4,7 @@ import StatCard from '@/app/components/StatCard'
 import {useAuthStore} from '@/app/store'
 import {allTrips} from "@/app/constants"
 import {useState, useEffect} from 'react'
+import { getUserTrips } from '@/app/service/trip-service'
 
 const Dashboard = () => {
 
@@ -18,16 +19,21 @@ const Dashboard = () => {
    }
 
    const {totalUsers, usersJoined, totalTrips, tripCreated, userRole} =  dashboardStat
-   const { setUser, user, hydrate } = useAuthStore();
-   const [isReady, setIsReady] = useState(false);
+   const {user} = useAuthStore();
+   const [userTrip, setUserTrip] = useState<any[]>([])
 
-  //  useEffect(() => {
-  //    hydrate(); // loads data from localStorage
-  //    setIsReady(true);
-  //  }, [hydrate]);
-  //  const user = {name: 'Pristine'}
-
-   console.log(user)
+  useEffect(() => {
+      if (!user) return;
+  
+      const fetchTrips = async () => {
+        const res = await getUserTrips(user.userId);
+        setUserTrip(res);
+      };
+  
+      fetchTrips();
+    }, [user]);
+  
+      console.log({userTrip})
 
   return (
     <div className="dashnoard wrapper">
@@ -61,7 +67,7 @@ const Dashboard = () => {
                   <h1 className="text-xl font-semibold text-dark-100 my-1">Created Trips</h1>
 
                 <div className="trip-grid">
-                 {allTrips.slice(0, 4).map(({id, name, imageUrls, itinerary, tags, estimatedPrice}) => (
+                 {allTrips.length > 0 ? allTrips.slice(0, 4).map(({id, name, imageUrls, itinerary, tags, estimatedPrice}) => (
                   <TripCard 
                    key={id}
                    id={id.toString()}
@@ -71,7 +77,9 @@ const Dashboard = () => {
                    tags={tags}
                    price={estimatedPrice}
                        />
-                 ))}
+                 )) : (
+                    <p>No Trip For Now!</p>
+                 )}
                 </div>
          </section>
          </section>

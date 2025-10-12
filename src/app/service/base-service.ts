@@ -17,11 +17,10 @@ interface trip {
     method: string
     headers: string[]
     queryParams: string
-     data: TripFormData
+    data: TripFormData
 }
 
 export async function fetchWithAuth(endpoint: string, options: trip = {}) {
-
 
     // Destructure params and other config options separately
     const { queryParams, ...axiosConfig } = options;

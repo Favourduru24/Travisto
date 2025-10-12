@@ -1,14 +1,15 @@
 import {fetchWithAuth} from './base-service'
 
-// export const createTrip = (tripData) => {
-//       console.log({tripData})
-//     return fetchWithAuth("/trip/create-trip", {
-//         method: 'POST',
-//         data: {  ...tripData},
-//     });
-// };
+declare interface TripFormData {
+  country: string;
+  travelStyle: string;
+  interest: string;
+  budget: string;
+  duration: number;
+  groupType: string;
+}
 
-export const createTrip = (tripData) => {
+export const createTrip = (tripData: any) => {
   const { formData, userId } = tripData.data; // ✅ unpack both levels
   console.log("Final trip data sent to backend:", { ...formData, userId });
 
@@ -18,8 +19,14 @@ export const createTrip = (tripData) => {
   });
 };
 
-export const getUserTrips = async (userId) => {
+export const getUserTrips = async (userId: number) => {
   return fetchWithAuth(`/trip/my-trips/${userId}`, {
+    method: 'GET',
+  });
+};
+
+export const getAllTrips = async () => {
+  return fetchWithAuth(`/trip/all-trip`, {
     method: 'GET',
   });
 };

@@ -14,7 +14,6 @@ const CreateTrip = () => {
     const [error, setError] = useState<string | null>(null)
     const [loading, setLoading] = useState<boolean>(false)
     const [countries, setCountries] = useState<any>([])
-    const [trip, setTrips] = useState<any[]>([])
     
     const [formData, setFormData] = useState<TripFormData>({
       country: countries[0]?.label || '',
@@ -49,26 +48,12 @@ const CreateTrip = () => {
     loader();
   }, []);
 
-   useEffect(() => {
-    if (!user) return;
-
-    const fetchTrips = async () => {
-      const res = await getUserTrips(user.userId);
-      setTrips(res);
-    };
-
-    fetchTrips();
-  }, [user]);
-
-  console.log({trip})
-
-
      const handleSubmit = async (e: any) => {
       e.preventDefault()
 
       try {
         
-        const newTrip = await createTrip({ data: { formData, userId: user.userId } })
+        const newTrip = await createTrip({ data: { formData, userId: user?.userId } })
 
          if(newTrip && newTrip?.success) {
           router.push('/dashboard')
@@ -79,11 +64,7 @@ const CreateTrip = () => {
       } catch(error) {
          console.error('Something went wrong to create trip.', error)
       }
-
-
      }
-
-     console.log(user.userId)
 
     const handleChange = (key: keyof TripFormData, value: string | number) => {
          setFormData({...formData, [key]: value})
