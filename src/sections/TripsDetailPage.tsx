@@ -74,14 +74,14 @@ const TripsDetailPage = ({id}: any) => {
       <figure className='info-pill'>
        <Image src="/assets/icons/location-mark.svg" width={24} height={24} alt='calender'/>
 
-         <figcaption>{itinerary?.slice(0, 4).map((item) => item.location).join(', ') || ''} days plan</figcaption>
+         <figcaption>{itinerary?.slice(0, 4)?.map((item) => item.location).join(', ') || ''} days plan</figcaption>
       </figure>
       </div>
      </header>
       
          <section className='gallery'>
-          {images.map((url: string, i: number) => (
-            <Image width={500} height={500} src={url} key={i} alt="image-grid" className={cn('w-full rounded-xl object-cover', i === 0 ? "md:col-span-2 md:row-span-2 h-[330px]" : 'md:row-span-1 h-[150px]')}/>
+          {images?.map((url: string, i: number) => (
+            <Image width={500} height={500} src={url.url} key={i} alt="image-grid" className={cn('w-full rounded-xl object-cover', i === 0 ? "md:col-span-2 md:row-span-2 h-[330px]" : 'md:row-span-1 h-[150px]')}/>
           ))}
          </section>
 
