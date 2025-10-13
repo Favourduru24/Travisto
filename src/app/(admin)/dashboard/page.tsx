@@ -67,19 +67,17 @@ const Dashboard = () => {
                   <h1 className="text-xl font-semibold text-dark-100 my-1">Created Trips</h1>
 
                 <div className="trip-grid">
-                 {allTrips.length > 0 ? allTrips.slice(0, 4).map(({id, name, imageUrls, itinerary, tags, estimatedPrice}) => (
+                 {userTrip.slice(0, 4)?.map(({id, name, images, itinerary, interests, estimatedPrice}) => (
                   <TripCard 
                    key={id}
                    id={id.toString()}
                    name={name}
-                   imageUrl={imageUrls[0]}  
+                   imageUrl={images[0]}  
                    location={itinerary?.[0]?.location ?? ''}
-                   tags={tags}
+                   tags={interests}
                    price={estimatedPrice}
                        />
-                 )) : (
-                    <p>No Trip For Now!</p>
-                 )}
+                 ))}
                 </div>
          </section>
          </section>

@@ -3,11 +3,14 @@
 import { getTripById } from '@/app/service/trip-service'
 import { useEffect, useState } from 'react'
 
-const TripsDetailPage = ({id}) => {
+const TripsDetailPage = ({id}: any) => {
 
     const [tripDetail, setTripDetail] = useState<any[]>([])
 
+
     useEffect(() => {
+       if(!id) return
+
        const fetchTripDetail = async () => {
          const res = await getTripById(id)
          setTripDetail(res)
@@ -16,10 +19,14 @@ const TripsDetailPage = ({id}) => {
        fetchTripDetail()
     }, [id])
 
+    
+    console.log({id})
     console.log({tripDetail})
 
   return (
-    <div>TripsDetailPage</div>
+    <div className="wrapper">
+      TripsDetailPage
+    </div>
   )
 }
 

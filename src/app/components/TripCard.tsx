@@ -4,13 +4,13 @@ import Link from "next/link"
 import {usePathname} from "next/navigation"
 import { getFirstWord } from "../lib/utils"
 
-const TripCard = ({id, name, location, imageUrl, tags, price}) => {
+const TripCard = ({id, name, location, imageUrl, price, tags}) => {
 
   const pathname = usePathname()
 
   return (
     <Link className='trip-card' href={`${pathname === '/' || pathname.startsWith('/travel') ? `/travel/${id}` : `/trips/${id}`}`}>
-         <Image src={imageUrl} alt={name} width={500} height={500} className=""/>
+       <Image src={imageUrl?.url} alt={name} width={500} height={500} className=""/> 
 
          <article>
           <h2>{name}</h2>
@@ -27,11 +27,15 @@ const TripCard = ({id, name, location, imageUrl, tags, price}) => {
          </article>
 
          <div className="mt-5 pl-[18px] pr-3.5 pb-5 flex gap-2">
-            {tags.map((tag, index) => (
-               <div key={index} className={`${index === 1 ? '!bg-pink-50 !text-pink-500' : '!bg-success-50 !text-success-700'} p-2 rounded-full text-sm`}>
-                   {getFirstWord(tag)}
-               </div>
+            {/* {tags.map((tag, index) => (
+               
             ))}
+               {/* {tags} */}
+
+            <div className='!bg-pink-50 !text-pink-500'>
+               {tags}
+
+               </div>
          </div>
 
          <article className="tripCard-pill">{price}</article>

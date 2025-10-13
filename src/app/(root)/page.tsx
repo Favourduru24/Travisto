@@ -4,26 +4,32 @@ import Link from "next/link"
 import { cn } from "@/lib/utils"
 import {imageGallery1, imageGallery2} from "@/app/constants"
  import {TripCard} from "@/app/components"
-import {allTrips} from "@/app/constants"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useAuthStore } from "../store"
 import { useRouter } from "next/navigation"
+import { getAllTrips } from "@/app/service/trip-service"
 
 const Home = () => {
-
-  //  const user = {
-  //     name: 'Duru Pristine',
-  //     email: 'durupristine@gmail.com',
-  //     imageUrl: '/assets/images/david.webp'
-  //   }
 
     const router = useRouter()
 
     const { setUser, user } = useAuthStore();
 
+    const [allTrips, setAllTrips] = useState<any[]>([])
+
     useEffect(() => {
-      // ✅ Initialize from localStorage on first render
-  
+        const fetchAllTrips = async () => {
+          const res = await getAllTrips();
+          setAllTrips(res);
+        };
+    
+        fetchAllTrips();
+      }, []);
+
+      console.log({allTrips})
+
+    useEffect(() => {
+       
       const urlParams = new URLSearchParams(window.location.search);
       const token = urlParams.get("token");
   
@@ -107,7 +113,6 @@ const Home = () => {
                     <Image src={imageUrls[0]} alt={name} key={id} width={500} height={500}
                       className={cn('w-full rounded-xl object-cover relative group', i === 0 ? 'md:col-span-2 md:row-span-2 h-[350px] ': 'md:row-span-1 h-[300px]')}
                     />
-                    // <p className="absolute top-0 z-10">{name}</p>
                   ))}
                   
                </section>
@@ -130,14 +135,14 @@ const Home = () => {
              </div>
 
                <div className="trip-grid">
-                                   {allTrips.map(({id, name, imageUrls, itinerary, tags, estimatedPrice}) => (
+                                   {allTrips.map(({id, name, images, itinerary, interests, estimatedPrice}) => (
                                        <TripCard 
                                        key={id}
                                        id={id.toString()}
                                        name={name}
-                                       imageUrl={imageUrls[0]}  
+                                       imageUrl={images[0]}  
                                        location={itinerary?.[0]?.location ?? ''}
-                                       tags={tags}
+                                       tags={interests}
                                        price={estimatedPrice}
                                    />
                                            ))}

@@ -31,6 +31,12 @@ export const getAllTrips = async () => {
   });
 };
 
+export const getAllUsers = async () => {
+  return fetchWithAuth(`/user/get-all-user`, {
+    method: 'GET',
+  });
+};
+
 // ✅ Get one trip by ID
 export const getTripById = async (id: number) => {
   return fetchWithAuth(`/trip/${id}`, {
