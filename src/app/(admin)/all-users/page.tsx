@@ -64,16 +64,16 @@ const AllUser = () => {
             </tr>
           </thead>
           <tbody>
-            {users && users.length === 0 ? (
+            {allUsers && allUsers.length === 0 ? (
               <tr className="border-b">
                 <td colSpan={5} className="py-4 text-center text-gray-500">
-                  No users found.
+                  No allUsers found.
                 </td>
               </tr>
             ) : (
               <>
-                {users &&
-                  users.map((user) => (
+                {allUsers &&
+                  allUsers.map((user) => (
                     <tr
                       key={user.id}
                       className="p-regular-14 lg:p-regular-16 border-b hover:text-white cursor-pointer hover:bg-primary-100 p-1"
@@ -85,8 +85,8 @@ const AllUser = () => {
                  
                       </td>
                       <td className="min-w-[150px] py-4 truncate px-2">{user.email}</td>
-                      <td className="min-w-[100px] py-4 trauncate text-sm">
-                        {user.time}
+                      <td className="min-w-[100px] py-4 truncate text-sm">
+                        {user.createdAt}
                       </td>
                       <td className={`min-w-[100px] py-4 text-right p-2 font-semibold text-sm ${user.status === 'user' ? "text-pink-500"  : user.status === 'admin' ? 'text-purple-500' : "text-gray-500"}`}>
                         <p className={`${user.status === 'agent' ? "text-pink-500"  : user.status === 'user' ? 'text-gray-500' : "text-green-500"}`}>{user.status}</p>
