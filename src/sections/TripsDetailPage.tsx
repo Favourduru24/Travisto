@@ -86,9 +86,9 @@ const TripsDetailPage = ({id}: any) => {
          </section>
 
          <section className='flex gap-3 md:gap-5 items-center flex-wrap'>
-             <div className='rounded-full '>
+             <div className='rounded-full flex gap-2'>
                 {pillItems.map((pill, i) => (
-                   <span key={i} className={`${pill.bg} !text-bas !font-medium !px-4`}>
+                   <span key={i} className={`${pill.bg} !text-base !font-medium !px-4 py-2 rounded-full`}>
                        {getFirstWord(pill.text)}
                    </span>
                 ))}
@@ -105,7 +105,7 @@ const TripsDetailPage = ({id}: any) => {
                   ))}   
 
                   <li className='ml-1'>
-                    <div className='rounded-full !bg-yellow-700 text-bas !font-medium '>
+                    <div className='rounded-full !bg-yellow-500 text-base !font-medium !px-4 py-2 '>
                        4.9/5 
                      </div>
                   </li> 

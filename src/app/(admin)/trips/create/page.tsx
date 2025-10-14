@@ -1,5 +1,5 @@
 'use client'
-import { ComboBox, Header } from "@/app/components" 
+import { ComboBox, Header, MapBox } from "@/app/components" 
 import { comboBoxItems, selectItems } from "@/app/constants"
 import { formatKey } from "@/app/lib/utils"
 import { useState, useEffect} from "react"
@@ -66,6 +66,14 @@ const CreateTrip = () => {
       }
      }
 
+     const mapData = [
+      {
+        country: formData.country,
+        color: '#EA382E',
+        coordinates: countries.find((c: Country) => c.name === formData.country)?.coordinates || []
+      }
+     ]
+
     const handleChange = (key: keyof TripFormData, value: string | number) => {
          setFormData({...formData, [key]: value})
     }
@@ -124,6 +132,7 @@ const CreateTrip = () => {
              <label htmlFor="location">
                Location on the world map
              </label>
+             <MapBox selectedCountry={formData.country}/>
            </div>
            <div className="bg-gray-200 h-px w-full"/>
              {error && (

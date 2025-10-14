@@ -9,11 +9,12 @@ import { useAuthStore } from "../store"
 import { useRouter } from "next/navigation"
 import { getAllTrips } from "@/app/service/trip-service"
 
+
 const Home = () => {
 
     const router = useRouter()
 
-    const { setUser, user } = useAuthStore();
+    const { setUser, user, logout } = useAuthStore();
 
     const [allTrips, setAllTrips] = useState<any[]>([])
 
@@ -26,14 +27,12 @@ const Home = () => {
         fetchAllTrips();
       }, []);
 
-      console.log({allTrips})
-
     useEffect(() => {
        
       const urlParams = new URLSearchParams(window.location.search);
       const token = urlParams.get("token");
   
-      if (!token) return; // No token, skip fetching
+      if (!token) return;
   
       const fetchUser = async () => {
         try {
@@ -45,7 +44,7 @@ const Home = () => {
   
           const user = await res.json();
           setUser(user, token);
-          router.push("/dashboard");
+          // router.push("/dashboard");
         } catch (error) {
           console.error("Error:", error);
           router.push("/sign-in");
@@ -72,7 +71,7 @@ const Home = () => {
                                 <h2 className="text-sm md:text-base font-semibold text-black truncate hover:text-gray-100">{user?.username}</h2>
                               </article>
                               {/* <Image src={`${user?.profileUrl ? user?.profileUrl : '/assets/images/david.webp'} `} width={24} height={24} alt={user?.username} className="size-10 rounded-full aspect-square"/> */}
-                              <button onClick={() => {console.log('Logout')}} className="cursor-pointer">
+                              <button onClick={() => logout()} className="cursor-pointer">
                                 <Image src="/assets/icons/logout.svg"
                                   alt="logout"
                                   className="size-9 hover:bg-gray-50/20 rounded-full bg-white p-1"

@@ -1,0 +1,26 @@
+'use client'
+ import { useAuthStore } from "@/app/store"
+import { useEffect} from "react"
+import { useRouter } from "next/navigation"
+
+const AuthGuard = ({children}) => {
+
+    const {token} = useAuthStore()
+    const router = useRouter()
+        
+       useEffect(() => {
+          
+          if(token) {
+               router.replace('/') 
+          }
+          
+       }, [token])
+
+  return (
+    <>
+     {children}
+    </>
+      )
+    }
+
+export default AuthGuard

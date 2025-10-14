@@ -1,4 +1,5 @@
 import { NavItems, MobileSidebar } from "../components"
+import RouteGuard from "@/app/components/RouteGuard"
 
 const AuthLayout = ({children}: {
    children: React.ReactNode
@@ -10,7 +11,9 @@ const AuthLayout = ({children}: {
              <NavItems/>
            </aside>
            <aside className="children">
-           {children}
+            <RouteGuard>
+             {children}
+            </RouteGuard>
            </aside>
          </main>
           

@@ -1,8 +1,22 @@
 'use client'
 import Image from "next/image"
 import Link from "next/link"
+ import { useAuthStore } from "@/app/store"
+import { useEffect} from "react"
+import { useRouter } from "next/navigation"
 
 const SignIn = () => {
+
+      const {token} = useAuthStore()
+      const router = useRouter()
+          
+         useEffect(() => {
+            
+            if(token) {
+                 router.replace('/') 
+            }
+            
+         }, [token])
 
   const handleLogin = () => {
   window.location.href = "http://localhost:4000/auth/google/login";

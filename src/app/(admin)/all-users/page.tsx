@@ -1,5 +1,6 @@
 'use client'
 import { Header, MapBox } from '@/app/components'
+import { Chart } from '@/app/components/Chart'
 import { getAllUsers } from '@/app/service/trip-service'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
@@ -98,7 +99,7 @@ const AllUser = () => {
           </tbody>
         </table>
       </section>
-            {/* <MapBox/> */}
+            <MapBox/>
                
     </section>
    )
