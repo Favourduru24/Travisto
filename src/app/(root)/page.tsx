@@ -44,7 +44,6 @@ const Home = () => {
   
           const user = await res.json();
           setUser(user, token);
-          // router.push("/dashboard");
         } catch (error) {
           console.error("Error:", error);
           router.push("/sign-in");

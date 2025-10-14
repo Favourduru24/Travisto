@@ -1,17 +1,17 @@
 "use client"
 
-import { Header, TripCard } from '@/app/components'
+import { Header, MapBox, TripCard } from '@/app/components'
 import { getFirstWord } from '@/app/lib/utils'
 import { getAllTrips, getTripById } from '@/app/service/trip-service'
 import { cn } from '@/lib/utils'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
-const TripsDetailPage = ({id}: any) => {
+const TravelDetailPage = ({id}: any) => {
 
     const [tripDetail, setTripDetail] = useState<Trip>([])
-    const [allTrips, setAllTrips] = useState<Trip>([])
-// groupType
+    const [allTrips, setAllTrips] = useState<any[]>([])
+ 
     useEffect(() => {
        if(!id) return
 
@@ -81,7 +81,7 @@ const TripsDetailPage = ({id}: any) => {
       
          <section className='gallery'>
           {images?.map((url: any, i: number) => (
-            <Image width={500} height={500} src={url.url} key={i} alt="image-grid" className={cn('w-full rounded-xl object-cover', i === 0 ? "md:col-span-2 md:row-span-2 h-[330px]" : 'md:row-span-1 h-[150px]')}/>
+            <Image width={500} height={500} src={url?.url} key={i} alt="image-grid" className={cn('w-full rounded-xl object-cover', i === 0 ? "md:col-span-2 md:row-span-2 h-[330px]" : 'md:row-span-1 h-[150px]')}/>
           ))}
          </section>
 
@@ -105,7 +105,7 @@ const TripsDetailPage = ({id}: any) => {
                   ))}   
 
                   <li className='ml-1'>
-                    <div className='rounded-full !bg-yellow-400 text-base !font-medium !px-2 py-1 '>
+                    <div className='rounded-full !bg-yellow-400 text-base !font-medium !px-2 py-1 text-white'>
                        4.9/5 
                      </div>
                   </li> 
@@ -161,9 +161,11 @@ const TripsDetailPage = ({id}: any) => {
                </section>
              ))}
 
-             <footer className=" w-full">
+              <MapBox selectedCountry={`Nigeria`}/>
+
+             <footer className="w-full">
                             <button className="button-class !h-12 w-full cursor-pointer">
-                               <p className='text-white text-sm font-semibold px-1'>Pay and join trip</p>
+                               <p className="text-white text-sm font-semibold px-1">Pay and join trips</p>
                                <span className="bg-white py-1 px-2.5 w-fit rounded-[20px] text-dark-100 text-sm font-semibold">{estimatedPrice} $1000</span>
                             </button>
                     </footer>
@@ -190,4 +192,4 @@ const TripsDetailPage = ({id}: any) => {
   )
 }
 
-export default TripsDetailPage
+export default TravelDetailPage

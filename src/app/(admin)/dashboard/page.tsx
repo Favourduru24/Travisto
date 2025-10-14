@@ -5,6 +5,8 @@ import {useAuthStore} from '@/app/store'
 import {allTrips} from "@/app/constants"
 import {useState, useEffect} from 'react'
 import { getUserTrips } from '@/app/service/trip-service'
+import { Chart } from '@/app/components/Chart'
+import Image from 'next/image'
 
 const Dashboard = () => {
 
@@ -21,6 +23,59 @@ const Dashboard = () => {
    const {totalUsers, usersJoined, totalTrips, tripCreated, userRole} =  dashboardStat
    const {user} = useAuthStore();
    const [userTrip, setUserTrip] = useState<any[]>([])
+
+   const users = [
+        {
+        id: 1,
+        username: 'Duru Pristine',
+        email: 'durupristine@gmail.com',
+        status: 'user',
+        time: 'May 2nd 2025',
+        profileUrl: '/assets/images/david.webp'
+    },
+        {
+        id: 2,
+        username: 'Hart Kelvin',
+        email: 'kelvinhart@gmail.com',
+        status: 'agent',
+        time: 'May 22nd 2025',
+        profileUrl: '/assets/images/david.webp'
+    },
+        {
+        id: 3,
+        username: 'Duru Favour',
+        email: 'durufavour@gmail.com',
+        status: 'admin',
+        time: 'May 3rd 2025',
+        profileUrl: '/assets/images/david.webp'
+    },
+]
+   const trips = [
+        {
+        id: 1,
+        username: 'Duru Pristine',
+        interests: 'Nightlife & Bars',
+        status: 'user',
+        time: 'May 2nd 2025',
+        profileUrl: '/assets/images/david.webp'
+    },
+        {
+        id: 2,
+        username: 'Hart Kelvin',
+        interests: 'Hiking, Nature etc',
+        status: 'agent',
+        time: 'May 22nd 2025',
+        profileUrl: '/assets/images/david.webp'
+    },
+        {
+        id: 3,
+        username: 'Duru Favour',
+        interests: 'Historical & Art',
+        status: 'admin',
+        time: 'May 3rd 2025',
+        profileUrl: '/assets/images/david.webp'
+    },
+]
 
   useEffect(() => {
       if (!user) return;
@@ -67,22 +122,120 @@ const Dashboard = () => {
                   <h1 className="text-xl font-semibold text-dark-100 my-1">Created Trips</h1>
 
                 <div className="trip-grid">
-                 {userTrip.slice(0, 4)?.map(({id, name, images, itinerary, interests, estimatedPrice}) => (
+                 {allTrips.slice(0, 4)?.map(({id, name, imageUrls, itinerary, tags, estimatedPrice}) => (
+                  <TripCard 
+                   key={id}
+                   id={id.toString()}
+                   name={name}
+                   imageUrl={imageUrls[0]}  
+                   location={itinerary?.[0]?.location ?? ''}
+                   tags={tags}
+                   price={estimatedPrice}
+                       />
+                 ))}
+                 {/* {userTrip.slice(0, 4)?.map(({id, name, images, itinerary, interests, estimatedPrice, travelStyle}) => (
                   <TripCard 
                    key={id}
                    id={id.toString()}
                    name={name}
                    imageUrl={images[0]}  
                    location={itinerary?.[0]?.location ?? ''}
-                   tags={interests}
+                   tags={[interests, travelStyle]}
                    price={estimatedPrice}
                        />
-                 ))}
+                 ))} */}
                 </div>
          </section>
+
+         <section className="grid grid-cols-1 lg:grid-cols-2 gap-5 my-4">
+            <Chart/>
+            <Chart/>
          </section>
-      
-    </div>
+            
+            <section className="grid grid-cols-1 lg:grid-cols-2 gap-5 my-4 mb-3">
+               <div className='flex flex-col'>
+                  <h2 className="text-sm md:text-lg text-dark-100 font-normal my-4 font-semibold">Latest sign up users</h2>
+                 <table className="w-full border-collapse border-t">
+                    <thead>
+                      <tr className="p-medium-14 border-b text-grey-500">
+                        <th className="min-w-[250px] py-3 text-left">Username</th>
+                        <th className="min-w-[200px] flex-1 py-3 pr-4 text-left">Trip Created</th>
+                         
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {users && users.length === 0 ? (
+                        <tr className="border-b">
+                          <td colSpan={5} className="py-4 text-center text-gray-500">
+                            No users found.
+                          </td>
+                        </tr>
+                      ) : (
+                        <>
+                          {users &&
+                            users.map((user) => (
+                              <tr
+                                key={user.id}
+                                className="p-regular-14 lg:p-regular-16 border-b hover:text-white cursor-pointer hover:bg-primary-100 p-1"
+                                style={{ boxSizing: 'border-box' }}>
+                                <td className="min-w-[200px] flex-1 py-4 pr-4 flex items-center gap-2 p-2">
+                                  <Image src={user?.profileUrl} width={24} height={24} alt={user?.username} className="size-10 rounded-full aspect-square"/>
+                                  {user.username}
+                           
+                                </td>
+                                <td className="min-w-[250px] py-4 font-semibold p-2">{user.id}</td>
+                                
+                              </tr>
+                            ))}
+                        </>
+                      )}
+                    </tbody>
+                  </table>
+               </div>
+          
+                <div className='flex flex-col'>
+                  <h2 className="text-sm md:text-lg text-dark-100 font-normal my-4 font-semibold">Trips based on interest</h2>
+                  <table className="w-full border-collapse border-t">
+                    <thead>
+                      <tr className="p-medium-14 border-b text-grey-500">
+                        <th className="min-w-[250px] py-3 text-left">Trips</th>
+                        <th className="min-w-[200px] flex-1 py-3 pr-4 text-left">Interests</th>
+                         
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {trips && trips.length === 0 ? (
+                        <tr className="border-b">
+                          <td colSpan={5} className="py-4 text-center text-gray-500">
+                            No trips found.
+                          </td>
+                        </tr>
+                      ) : (
+                        <>
+                          {trips &&
+                            trips.map((user) => (
+                              <tr
+                                key={user.id}
+                                className="p-regular-14 lg:p-regular-16 border-b hover:text-white cursor-pointer hover:bg-primary-100 p-1"
+                                style={{ boxSizing: 'border-box' }}>
+                                <td className="min-w-[200px] flex-1 py-4 pr-4 flex items-center gap-2 p-2">
+                                  <Image src={user?.profileUrl} width={24} height={24} alt={user?.username} className="size-10 rounded-full aspect-square"/>
+                                  {user.username}
+                           
+                                </td>
+                                <td className="min-w-[250px] py-4 p-2 text-base">{user.interests}</td>
+                                
+                              </tr>
+                            ))}
+                        </>
+                      )}
+                    </tbody>
+                  </table>
+                  </div>
+            </section>
+
+         </section>
+       </div>
   )
 }
 

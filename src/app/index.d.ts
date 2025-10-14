@@ -73,7 +73,7 @@ declare interface Trip {
   interests: string;
   groupType: string;
   country: string;
-  imageUrls: string[];
+  images: string[];
   itinerary: DayPlan[];
   bestTimeToVisit: string[];
   weatherInfo: string[];

@@ -3,6 +3,7 @@ import Image from "next/image"
 import Link from "next/link"
 import {usePathname} from "next/navigation"
 import { getFirstWord } from "../lib/utils"
+import {cn} from "../../lib/utils"
 
 const TripCard = ({id, name, location, imageUrl, price, tags}) => {
 
@@ -27,15 +28,12 @@ const TripCard = ({id, name, location, imageUrl, price, tags}) => {
          </article>
 
          <div className="mt-5 pl-[18px] pr-3.5 pb-5 flex gap-2">
-            {/* {tags.map((tag, index) => (
-               
-            ))}
-               {/* {tags} */}
-
-            <div className='!bg-pink-50 !text-pink-500'>
-               {tags}
-
+            {tags.map((tag, index) => (
+               <div className={`${cn(index === 1 ? '!bg-pink-50 !text-pink-500 ': 'bg-success-50 text-success-700')} p-1 rounded-full`} key={index}>
+               {getFirstWord(tag)}
                </div>
+            ))}
+                
          </div>
 
          <article className="tripCard-pill">{price}</article>
