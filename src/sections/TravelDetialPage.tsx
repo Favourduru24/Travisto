@@ -6,11 +6,14 @@ import { getAllTrips, getTripById } from '@/app/service/trip-service'
 import { cn } from '@/lib/utils'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
+import CheckOutButton from './CheckOutButton'
+import { useAuthStore } from '@/app/store'
 
 const TravelDetailPage = ({id}: any) => {
 
     const [tripDetail, setTripDetail] = useState<Trip>([])
     const [allTrips, setAllTrips] = useState<any[]>([])
+    const {user} = useAuthStore()
  
     useEffect(() => {
        if(!id) return
@@ -163,12 +166,7 @@ const TravelDetailPage = ({id}: any) => {
 
               <MapBox selectedCountry={`Nigeria`}/>
 
-             <footer className="w-full">
-                            <button className="button-class !h-12 w-full cursor-pointer">
-                               <p className="text-white text-sm font-semibold px-1">Pay and join trips</p>
-                               <span className="bg-white py-1 px-2.5 w-fit rounded-[20px] text-dark-100 text-sm font-semibold">{estimatedPrice} $1000</span>
-                            </button>
-                    </footer>
+             <CheckOutButton trip={tripDetail} userId={user?.userId}/>
       </section>
 
       <section className='flex flex-col gap-6'>

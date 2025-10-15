@@ -133,14 +133,14 @@ const Home = () => {
              </div>
 
                <div className="trip-grid">
-                                   {allTrips.map(({id, name, images, itinerary, interests, estimatedPrice}) => (
+                                   {allTrips.map(({id, name, images, itinerary, interests, estimatedPrice, travelStyle}) => (
                                        <TripCard 
                                        key={id}
                                        id={id.toString()}
                                        name={name}
                                        imageUrl={images[0]}  
                                        location={itinerary?.[0]?.location ?? ''}
-                                       tags={interests}
+                                       tags={[interests, travelStyle]}
                                        price={estimatedPrice}
                                    />
                                            ))}

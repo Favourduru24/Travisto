@@ -7,6 +7,7 @@ import {useState, useEffect} from 'react'
 import { getUserTrips } from '@/app/service/trip-service'
 import { Chart } from '@/app/components/Chart'
 import Image from 'next/image'
+import { getDashboardStats, getTripsGrowth, getUserGrowth } from '@/app/service/dashboard-service'
 
 const Dashboard = () => {
 
@@ -23,6 +24,34 @@ const Dashboard = () => {
    const {totalUsers, usersJoined, totalTrips, tripCreated, userRole} =  dashboardStat
    const {user} = useAuthStore();
    const [userTrip, setUserTrip] = useState<any[]>([])
+   const [dashsStat, setDashStat] = useState([])
+   const [usersGrowth, setUserGrowth] = useState([])
+   const [tripsGrowth, setTripGrowth] = useState([])
+
+   useEffect(() => {
+        const fetchDashboardStats = async () => {
+            const res = await getDashboardStats()
+            setDashStat(res)
+        }
+
+        const fetchgetUserGrowth = async () => {
+            const res = await getUserGrowth()
+            setUserGrowth(res)
+        }
+
+        const fetchTripsGrowth = async () => {
+            const res = await getTripsGrowth()
+            setTripGrowth(res)
+        }
+
+
+        fetchDashboardStats()
+        fetchgetUserGrowth()
+        fetchTripsGrowth()
+
+   }, [])
+
+   console.log({dashsStat, usersGrowth, tripsGrowth})
 
    const users = [
         {
@@ -88,7 +117,7 @@ const Dashboard = () => {
       fetchTrips();
     }, [user]);
   
-      console.log({userTrip})
+      // console.log({userTrip})
 
   return (
     <div className="dashnoard wrapper">

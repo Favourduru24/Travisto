@@ -10,12 +10,12 @@ declare interface TripFormData {
 }
 
 export const createTrip = (tripData: any) => {
-  const { formData, userId } = tripData.data; // ✅ unpack both levels
+  const { formData, userId } = tripData.data;  
   console.log("Final trip data sent to backend:", { ...formData, userId });
 
   return fetchWithAuth("/trip/create-trip", {
     method: 'POST',
-    data: { ...formData, userId }, // ✅ flatten everything here
+    data: { ...formData, userId },
   });
 };
 
@@ -37,7 +37,6 @@ export const getAllUsers = async () => {
   });
 };
 
-// ✅ Get one trip by ID
 export const getTripById = async (id: number) => {
   return fetchWithAuth(`/trip/${id}`, {
     method: 'GET',
