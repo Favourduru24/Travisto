@@ -28,8 +28,8 @@ export const checkoutOrder = async (order) => {
         buyerId: order.buyerId,
       },
       mode: 'payment',
-      success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/success`,
-      cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/`,
+      success_url: `${process.env.NEXT_PUBLIC_SERVER_URL!}/success`,
+      cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL!}/`,
     });
 
     redirect(session.url)

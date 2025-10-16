@@ -29,27 +29,24 @@ const Dashboard = () => {
    const [tripsGrowth, setTripGrowth] = useState([])
 
    useEffect(() => {
-        const fetchDashboardStats = async () => {
-            const res = await getDashboardStats()
-            setDashStat(res)
-        }
+  const fetchData = async () => {
+    try {
+      const [stats, users, trips] = await Promise.all([
+        getDashboardStats(),
+        getUserGrowth(),
+        getTripsGrowth(),
+      ]);
 
-        const fetchgetUserGrowth = async () => {
-            const res = await getUserGrowth()
-            setUserGrowth(res)
-        }
+      setDashStat(stats);
+      setUserGrowth(users);
+      setTripGrowth(trips);
+    } catch (error) {
+      console.error("Failed to fetch dashboard data:", error);
+    }
+  };
 
-        const fetchTripsGrowth = async () => {
-            const res = await getTripsGrowth()
-            setTripGrowth(res)
-        }
-
-
-        fetchDashboardStats()
-        fetchgetUserGrowth()
-        fetchTripsGrowth()
-
-   }, [])
+  fetchData();
+}, []);
 
    console.log({dashsStat, usersGrowth, tripsGrowth})
 
