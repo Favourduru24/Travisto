@@ -41,7 +41,7 @@ const Trips = () => {
                         name={name}
                         imageUrl={images[0]}  
                         location={itinerary?.[0]?.location ?? ''}
-                        tags={[interest, travelStyle]}
+                        tags={[interests, travelStyle]}
                         price={estimatedPrice}
                     />
                             ))}

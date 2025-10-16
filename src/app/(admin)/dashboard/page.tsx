@@ -21,13 +21,13 @@ const Dashboard = () => {
       userRole: {total: 62, currentMonth: 25, lastMonth: 15}
    }
 
-   const {totalUsers, usersJoined, totalTrips, tripCreated, userRole} =  dashboardStat
    const {user} = useAuthStore();
    const [userTrip, setUserTrip] = useState<any[]>([])
    const [dashsStat, setDashStat] = useState([])
    const [usersGrowth, setUserGrowth] = useState([])
    const [tripsGrowth, setTripGrowth] = useState([])
-
+   
+   const {totalUsers, usersJoined, totalTrips, tripsCreated} =  dashsStat || {}
    useEffect(() => {
   const fetchData = async () => {
     try {
@@ -114,7 +114,7 @@ const Dashboard = () => {
       fetchTrips();
     }, [user]);
   
-      // console.log({userTrip})
+      console.log({userTrip})
 
   return (
     <div className="dashnoard wrapper">
@@ -127,28 +127,28 @@ const Dashboard = () => {
               <StatCard 
                 headerTitle="Total Users"
                 total={totalUsers}
-                currentMonthCount={usersJoined.currentMonth}
-                lastMonthCount={usersJoined.lastMonth}
+                currentMonthCount={usersJoined?.currentMonth}
+                lastMonthCount={usersJoined?.lastMonth}
                 /> 
               <StatCard 
                 headerTitle="Total Trip"
                 total={totalTrips}
-                currentMonthCount={tripCreated.currentMonth}
-                lastMonthCount={tripCreated.lastMonth}
+                currentMonthCount={tripsCreated?.currentMonth}
+                lastMonthCount={tripsCreated?.lastMonth}
                 /> 
-              <StatCard 
+              {/* <StatCard 
                 headerTitle="Active Users"
                 total={userRole.total}
                 currentMonthCount={userRole.currentMonth}
                 lastMonthCount={userRole.lastMonth}
-                /> 
+                />  */}
           </div>
 
          <section className="container">
                   <h1 className="text-xl font-semibold text-dark-100 my-1">Created Trips</h1>
 
                 <div className="trip-grid">
-                 {allTrips.slice(0, 4)?.map(({id, name, imageUrls, itinerary, tags, estimatedPrice}) => (
+                 {/* {allTrips.slice(0, 4)?.map(({id, name, imageUrls, itinerary, tags, estimatedPrice}) => (
                   <TripCard 
                    key={id}
                    id={id.toString()}
@@ -158,8 +158,8 @@ const Dashboard = () => {
                    tags={tags}
                    price={estimatedPrice}
                        />
-                 ))}
-                 {/* {userTrip.slice(0, 4)?.map(({id, name, images, itinerary, interests, estimatedPrice, travelStyle}) => (
+                 ))} */}
+                 {userTrip.slice(0, 4)?.map(({id, name, images, itinerary, interests, estimatedPrice, travelStyle}) => (
                   <TripCard 
                    key={id}
                    id={id.toString()}
@@ -169,13 +169,14 @@ const Dashboard = () => {
                    tags={[interests, travelStyle]}
                    price={estimatedPrice}
                        />
-                 ))} */}
+                 ))}
                 </div>
          </section>
 
          <section className="grid grid-cols-1 lg:grid-cols-2 gap-5 my-4">
-            <Chart/>
-            <Chart/>
+            <Chart data={dashsStat?.tripsByTravelStyle} keys="travelStyle" num="count"/>
+            <Chart data={tripsGrowth} keys="day" num="count"/>
+            {/* <Chart/> */}
          </section>
             
             <section className="grid grid-cols-1 lg:grid-cols-2 gap-5 my-4 mb-3">

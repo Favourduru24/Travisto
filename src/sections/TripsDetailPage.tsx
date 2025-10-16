@@ -164,7 +164,7 @@ const TripsDetailPage = ({id}: any) => {
              <footer className=" w-full">
                             <button className="button-class !h-12 w-full cursor-pointer">
                                <p className='text-white text-sm font-semibold px-1'>Pay and join trip</p>
-                               <span className="bg-white py-1 px-2.5 w-fit rounded-[20px] text-dark-100 text-sm font-semibold">{estimatedPrice} $1000</span>
+                               <span className="bg-white py-1 px-2.5 w-fit rounded-[20px] text-dark-100 text-sm font-semibold">{estimatedPrice}</span>
                             </button>
                     </footer>
       </section>
@@ -173,17 +173,17 @@ const TripsDetailPage = ({id}: any) => {
                 <h2 className='p-24-semibold text-dark-100'>Popular Trips</h2>
 
                 <div className="trip-grid">
-                                   {allTrips.map(({id, name, images, itinerary, interests, estimatedPrice}) => (
-                                       <TripCard 
-                                       key={id}
-                                       id={id.toString()}
-                                       name={name}
-                                       imageUrl={images[0]}  
-                                       location={itinerary?.[0]?.location ?? ''}
-                                       tags={interests}
-                                       price={estimatedPrice}
-                                   />
-                                           ))}
+                                    {allTrips.map(({id, name, images, itinerary, interests, estimatedPrice, travelStyle}) => (
+                                                                          <TripCard 
+                                                                          key={id}
+                                                                          id={id.toString()}
+                                                                          name={name}
+                                                                          imageUrl={images[0]}  
+                                                                          location={itinerary?.[0]?.location ?? ''}
+                                                                          tags={[interests, travelStyle]}
+                                                                          price={estimatedPrice}
+                                                                      />
+                                                                              ))}
                                 </div>
              </section>
     </div>

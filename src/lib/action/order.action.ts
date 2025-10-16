@@ -7,7 +7,8 @@ import { redirect } from 'next/navigation';
 export const checkoutOrder = async (order) => {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
-//   const price = order.isFree ? 0 : Number(order.price) * 100;
+const cleanPrice = String(order.price).replace(/[^0-9.]/g, "") // remove $ and any non-numeric chars
+const amount = Math.round(Number(cleanPrice) * 100)
 
   try {
     const session = await stripe.checkout.sessions.create({
@@ -15,7 +16,7 @@ export const checkoutOrder = async (order) => {
         {
           price_data: {
             currency: 'usd',
-            unit_amount: order.price,
+            unit_amount: amount,
             product_data: {
               name: order.tripName
             }

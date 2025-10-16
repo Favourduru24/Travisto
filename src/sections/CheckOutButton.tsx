@@ -3,7 +3,7 @@ import { useEffect } from "react"
 import {loadStripe} from "@stripe/stripe-js"
 import { checkoutOrder } from "@/lib/action/order.action"
 
- loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
+ loadStripe('pk_test_51QnWXkPRigtMn8vR0aibTtxOFTUoCICH5RnwzxycTeO3iylsaDolHlW87xlAqsJkl9gI09czeiIIa5Ul3oa8nrf300At9sUTln')
 
 const CheckOutButton = ({trip, userId}) => {
 
@@ -35,9 +35,9 @@ const CheckOutButton = ({trip, userId}) => {
 
   return (
     <footer className="w-full">
-        <button className="button-class !h-12 w-full cursor-pointer" onSubmit={onCheckout}>
+        <button className="button-class !h-12 w-full cursor-pointer" onClick={onCheckout}>
             <p className="text-white text-sm font-semibold px-1">Pay and join trips</p>
-            <span className="bg-white py-1 px-2.5 w-fit rounded-[20px] text-dark-100 text-sm font-semibold">{trip.estimatedPrice} $1000</span>
+            <span className="bg-white py-1 px-2.5 w-fit rounded-[20px] text-dark-100 text-sm font-semibold">{trip.estimatedPrice}</span>
         </button>
     </footer>
   )

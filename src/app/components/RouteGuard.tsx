@@ -10,7 +10,7 @@ const RouteGuard = ({children}) => {
         
        useEffect(() => {
           
-          if(!token) {
+          if(token) {
                router.replace('/sign-in') 
           }
           

@@ -164,7 +164,7 @@ const TravelDetailPage = ({id}: any) => {
                </section>
              ))}
 
-              <MapBox selectedCountry={`Nigeria`}/>
+              <MapBox selectedCountry={country}/>
 
              <CheckOutButton trip={tripDetail} userId={user?.userId}/>
       </section>
@@ -173,18 +173,18 @@ const TravelDetailPage = ({id}: any) => {
                 <h2 className='p-24-semibold text-dark-100'>Popular Trips</h2>
 
                 <div className="trip-grid">
-                                   {allTrips.map(({id, name, images, itinerary, interests, estimatedPrice}) => (
-                                       <TripCard 
-                                       key={id}
-                                       id={id.toString()}
-                                       name={name}
-                                       imageUrl={images[0]}  
-                                       location={itinerary?.[0]?.location ?? ''}
-                                       tags={interests}
-                                       price={estimatedPrice}
-                                   />
-                                           ))}
-                                </div>
+                                   {allTrips.map(({id, name, images, itinerary, interests, estimatedPrice, travelStyle}) => (
+                                                                                                             <TripCard 
+                                                                                                             key={id}
+                                                                                                             id={id.toString()}
+                                                                                                   name={name}
+                                                                                                             imageUrl={images[0]}  
+                                                                                                             location={itinerary?.[0]?.location ?? ''}
+                                                                                                             tags={[interests, travelStyle]}
+                                                                                                             price={estimatedPrice}
+                                                                                                         />
+                                                                                                                 ))}
+ </div>
              </section>
     </div>
   )

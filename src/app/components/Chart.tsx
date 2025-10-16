@@ -36,7 +36,9 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export function Chart() {
+export function Chart({data, keys, num}) {
+
+  console.log(data)
   return (
     <Card>
       <CardHeader>
@@ -47,24 +49,24 @@ export function Chart() {
         <ChartContainer config={chartConfig}>
           <BarChart
             accessibilityLayer
-            data={chartData}
+            data={data}
             margin={{
               top: 20,
             }}
           >
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="month"
+              dataKey={keys}
               tickLine={false}
               tickMargin={10}
               axisLine={false}
-              tickFormatter={(value) => value.slice(0, 3)}
+              tickFormatter={(value) => value?.slice(0, 3)}
             />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
             />
-            <Bar dataKey="desktop" fill="var(--color-desktop)" radius={8}>
+            <Bar dataKey={num} fill="var(--color-desktop)" radius={8}>
               <LabelList
                 position="top"
                 offset={12}
