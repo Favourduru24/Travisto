@@ -188,7 +188,7 @@ const Dashboard = () => {
                       ) : (
                         <>
                           {u &&
-                            u.map((user) => (
+                            u.slice(0, 3)?.map((user) => (
                               <tr
                                 key={user.id}
                                 className="p-regular-14 lg:p-regular-16 border-b hover:text-white cursor-pointer hover:bg-primary-100 p-1 text-gray-500"
