@@ -1,14 +1,15 @@
 // import { clsx, type ClassValue } from "clsx";
 // import { twMerge } from "tailwind-merge";
-// import dayjs from "dayjs";
+import dayjs from "dayjs";
+import qs from "query-string";
 
 // export function cn(...inputs: ClassValue[]) {
 //   return twMerge(clsx(inputs));
 // }
 
-// export const formatDate = (dateString: string): string => {
-//   return dayjs(dateString).format("MMMM DD, YYYY");
-// };
+export const formatDate = (dateString: string): string => {
+  return dayjs(dateString).format("MMMM DD, YYYY");
+};
 
 
 export function parseTripData(jsonString: string): Trip | null {
@@ -53,3 +54,33 @@ export const formatKey = (key: keyof TripFormData) => {
     .replace(/([A-Z])/g, " $1")
     .replace(/^./, (str) => str.toUpperCase());
 };
+
+export function formUrlQuery({ params, key, value }) {
+    const currentUrl = qs.parse(params)
+  
+    currentUrl[key] = value
+  
+    return qs.stringifyUrl(
+      {
+        url: window.location.pathname,
+        query: currentUrl,
+      },
+      { skipNull: true }
+    )
+  }
+
+  export function removeKeysFromQuery({ params, keysToRemove }) {
+    const currentUrl = qs.parse(params)
+  
+    keysToRemove.forEach(key => {
+      delete currentUrl[key]
+    })
+  
+    return qs.stringifyUrl(
+      {
+        url: window.location.pathname,
+        query: currentUrl,
+      },
+      { skipNull: true }
+    )
+  }

@@ -19,7 +19,7 @@ const SignIn = () => {
          }, [token])
 
   const handleLogin = () => {
-  window.location.href = "http://localhost:4000/auth/google/login";
+  window.location.href = "http://localhost:4000/choose-role/auth/google/login";
 };
 
    return (

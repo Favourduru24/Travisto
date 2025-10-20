@@ -7,7 +7,7 @@ import Image from 'next/image'
 import { ComboboxOption } from "@/app/components/ComboBox"
 import {useAuthStore} from '@/app/store'
 import { useRouter } from "next/navigation"
-import {createTrip, getUserTrips} from "@/app/service/trip-service"
+import {createTrip} from "@/app/service/trip-service"
 
 const CreateTrip = () => {
 
@@ -35,9 +35,9 @@ const CreateTrip = () => {
 
       // Format the data before saving
       const formatted = data.map((country: any) => ({
-        label: `${country.name.common}`, // optional emoji or flag image if needed
+        label: `${country.name.common}`,
         flag: country.flags?.png,
-        coordinates: country.latlng, // [lat, lng]
+        coordinates: country.latlng, 
         value: country.name.common,
         openStreetMap: country.maps?.openStreetMaps,
       }));
@@ -49,30 +49,28 @@ const CreateTrip = () => {
   }, []);
 
      const handleSubmit = async (e: any) => {
-      e.preventDefault()
+       setLoading(true)
+       setError(null)
+       e.preventDefault()
 
       try {
         
         const newTrip = await createTrip({ data: { formData, userId: user?.userId } })
-
-         if(newTrip && newTrip?.success) {
-          router.push('/dashboard')
+        if(newTrip) {
+          router.push(`/trips/${newTrip?.id}`)
          } else {
+           setError('Failed to redirect to trip page')
            throw new Error('Failed to create new trip.')
          }
 
       } catch(error) {
          console.error('Something went wrong to create trip.', error)
+         setError('Something wehnt wrong creating trip.')
+      } finally{
+        setLoading(false)
       }
      }
 
-     const mapData = [
-      {
-        country: formData.country,
-        color: '#EA382E',
-        coordinates: countries.find((c: Country) => c.name === formData.country)?.coordinates || []
-      }
-     ]
 
     const handleChange = (key: keyof TripFormData, value: string | number) => {
          setFormData({...formData, [key]: value})
@@ -137,7 +135,7 @@ const CreateTrip = () => {
            <div className="bg-gray-200 h-px w-full"/>
              {error && (
                  <div className="error">
-                   <p>{error}</p>
+                   <p className="text-red-400 tex-lg text-center">{error}</p>
                  </div>
              )}
 

@@ -2,10 +2,11 @@
 import { Header, TripCard} from '@/app/components'
 import StatCard from '@/app/components/StatCard'
 import {useAuthStore} from '@/app/store'
-import {allTrips} from "@/app/constants"
+// import {allTrips} from "@/app/constants"
 import {useState, useEffect} from 'react'
-import { getUserTrips } from '@/app/service/trip-service'
+import { getUserTrips, getAllTrips, getAllUsers} from '@/app/service/trip-service'
 import { Chart } from '@/app/components/Chart'
+import {Loader2} from 'lucide-react'
 import Image from 'next/image'
 import { getDashboardStats, getTripsGrowth, getUserGrowth } from '@/app/service/dashboard-service'
 
@@ -22,86 +23,50 @@ const Dashboard = () => {
    }
 
    const {user} = useAuthStore();
-   const [userTrip, setUserTrip] = useState<any[]>([])
+   const [userTrip, setUserTrip] = useState<{ data: any[], meta: any }>({ data: [], meta: {} })
    const [dashsStat, setDashStat] = useState([])
    const [usersGrowth, setUserGrowth] = useState([])
    const [tripsGrowth, setTripGrowth] = useState([])
+   const [allTrips, setAllTrips] = useState<{ data: any[], meta: any }>({ data: [], meta: {} });
+   const [allUsers, setAllUsers] = useState<any[]>([])
+   const [loading, setLoading] = useState(false)
+   const [error, setError] = useState<string|null>(null)
    
-   const {totalUsers, usersJoined, totalTrips, tripsCreated} =  dashsStat || {}
+   const {totalUsers, usersJoined, totalTrips, tripsCreated, userRole} =  dashsStat || {}
+
    useEffect(() => {
+
   const fetchData = async () => {
+     const limit = 10
+     setLoading(true)
+     setError(null)
+
     try {
-      const [stats, users, trips] = await Promise.all([
+      const [stats, users, trips, allTrips, allUsers] = await Promise.all([ //
         getDashboardStats(),
         getUserGrowth(),
         getTripsGrowth(),
+        getAllTrips({limit}),
+        getAllUsers()
       ]);
 
       setDashStat(stats);
       setUserGrowth(users);
       setTripGrowth(trips);
+      setAllTrips(allTrips)
+      setAllUsers(allUsers)
     } catch (error) {
       console.error("Failed to fetch dashboard data:", error);
+      setError('Something went wrong fetching dashboard stats.')
+      alert('Something went wrong fetching dashboard stats.')
+    } finally {
+      setLoading(false)
     }
   };
 
   fetchData();
 }, []);
 
-   console.log({dashsStat, usersGrowth, tripsGrowth})
-
-   const users = [
-        {
-        id: 1,
-        username: 'Duru Pristine',
-        email: 'durupristine@gmail.com',
-        status: 'user',
-        time: 'May 2nd 2025',
-        profileUrl: '/assets/images/david.webp'
-    },
-        {
-        id: 2,
-        username: 'Hart Kelvin',
-        email: 'kelvinhart@gmail.com',
-        status: 'agent',
-        time: 'May 22nd 2025',
-        profileUrl: '/assets/images/david.webp'
-    },
-        {
-        id: 3,
-        username: 'Duru Favour',
-        email: 'durufavour@gmail.com',
-        status: 'admin',
-        time: 'May 3rd 2025',
-        profileUrl: '/assets/images/david.webp'
-    },
-]
-   const trips = [
-        {
-        id: 1,
-        username: 'Duru Pristine',
-        interests: 'Nightlife & Bars',
-        status: 'user',
-        time: 'May 2nd 2025',
-        profileUrl: '/assets/images/david.webp'
-    },
-        {
-        id: 2,
-        username: 'Hart Kelvin',
-        interests: 'Hiking, Nature etc',
-        status: 'agent',
-        time: 'May 22nd 2025',
-        profileUrl: '/assets/images/david.webp'
-    },
-        {
-        id: 3,
-        username: 'Duru Favour',
-        interests: 'Historical & Art',
-        status: 'admin',
-        time: 'May 3rd 2025',
-        profileUrl: '/assets/images/david.webp'
-    },
-]
 
   useEffect(() => {
       if (!user) return;
@@ -114,7 +79,27 @@ const Dashboard = () => {
       fetchTrips();
     }, [user]);
   
-      console.log({userTrip})
+
+      const trip = allTrips.data.map((t) => ({
+         imageUrl: t.images[0]?.url,
+         name: t.name,
+         travelStyle: t?.travelStyle
+      }))
+
+     const u = allUsers.map((u) => ({
+       username: u.username,
+       images: u.profileUrl,
+       id: u.id
+     }))
+
+     
+   if(loading) {
+         return (
+           <div className="flex inset-0 fixed items-center justify-center bg-gray-50/50 z-50">
+               <Loader2 className="w-16 h-16 animate-spin text-primary-100"/>
+           </div>
+         )
+       }
 
   return (
     <div className="dashnoard wrapper">
@@ -136,30 +121,22 @@ const Dashboard = () => {
                 currentMonthCount={tripsCreated?.currentMonth}
                 lastMonthCount={tripsCreated?.lastMonth}
                 /> 
-              {/* <StatCard 
+              <StatCard 
                 headerTitle="Active Users"
-                total={userRole.total}
-                currentMonthCount={userRole.currentMonth}
-                lastMonthCount={userRole.lastMonth}
-                />  */}
+                total={userRole?.total}
+                currentMonthCount={userRole?.currentMonth}
+                lastMonthCount={userRole?.lastMonth}
+                /> 
           </div>
+                <p className='font-medium text-red-400 text-lg'>{error}</p>
 
          <section className="container">
                   <h1 className="text-xl font-semibold text-dark-100 my-1">Created Trips</h1>
 
                 <div className="trip-grid">
-                 {/* {allTrips.slice(0, 4)?.map(({id, name, imageUrls, itinerary, tags, estimatedPrice}) => (
-                  <TripCard 
-                   key={id}
-                   id={id.toString()}
-                   name={name}
-                   imageUrl={imageUrls[0]}  
-                   location={itinerary?.[0]?.location ?? ''}
-                   tags={tags}
-                   price={estimatedPrice}
-                       />
-                 ))} */}
-                 {userTrip.slice(0, 4)?.map(({id, name, images, itinerary, interests, estimatedPrice, travelStyle}) => (
+                  
+                 {
+                 userTrip?.data.length > 0 ?  userTrip.data?.slice(0, 3)?.map(({id, name, images, itinerary, interests, estimatedPrice, travelStyle}) => (
                   <TripCard 
                    key={id}
                    id={id.toString()}
@@ -169,20 +146,31 @@ const Dashboard = () => {
                    tags={[interests, travelStyle]}
                    price={estimatedPrice}
                        />
-                 ))}
+                 )) : 
+                    allTrips?.data.slice(0, 3)?.map(({id, name, images, itinerary, interests, travelStyle, estimatedPrice}) => (
+                  <TripCard 
+                   key={id}
+                   id={id.toString()}
+                   name={name}
+                   imageUrl={images[0]}  
+                   location={itinerary?.[0]?.location ?? ''}
+                   tags={[interests, travelStyle]}
+                   price={estimatedPrice}
+                       />
+                 ))
+                 }
                 </div>
          </section>
 
          <section className="grid grid-cols-1 lg:grid-cols-2 gap-5 my-4">
-            <Chart data={dashsStat?.tripsByTravelStyle} keys="travelStyle" num="count"/>
-            <Chart data={tripsGrowth} keys="day" num="count"/>
-            {/* <Chart/> */}
+            <Chart data={usersGrowth} keys="day" num="count" label="User Growth" title1={`Trending up by ${Math.floor(Math.random(10) * 10)}%  this month`} title2="Showing total visitors for the last 2 months"/>
+            <Chart data={dashsStat?.tripsByTravelStyle} keys="travelStyle" num="count" label="Trip - Travel Style" title1={`Trending up by ${Math.floor(Math.random(10) * 10)}%  this month`} title2="Showing total visitors for the last 2 months"/>
          </section>
             
-            <section className="grid grid-cols-1 lg:grid-cols-2 gap-5 my-4 mb-3">
+            <section className="grid grid-cols-1 lg:grid-cols-2 gap-5 my-4 mb-3 overflow-hidden">
                <div className='flex flex-col'>
-                  <h2 className="text-sm md:text-lg text-dark-100 font-normal my-4 font-semibold">Latest sign up users</h2>
-                 <table className="w-full border-collapse border-t">
+                  <h2 className="text-sm md:text-lg text-dark-100 my-4 font-semibold">Latest sign up users</h2>
+                 <table className="w-full border-collapse border-t overflow-hidden">
                     <thead>
                       <tr className="p-medium-14 border-b text-grey-500">
                         <th className="min-w-[250px] py-3 text-left">Username</th>
@@ -191,26 +179,26 @@ const Dashboard = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {users && users.length === 0 ? (
+                      {u && u.length === 0 ? (
                         <tr className="border-b">
                           <td colSpan={5} className="py-4 text-center text-gray-500">
-                            No users found.
+                            No u found.
                           </td>
                         </tr>
                       ) : (
                         <>
-                          {users &&
-                            users.map((user) => (
+                          {u &&
+                            u.map((user) => (
                               <tr
                                 key={user.id}
-                                className="p-regular-14 lg:p-regular-16 border-b hover:text-white cursor-pointer hover:bg-primary-100 p-1"
+                                className="p-regular-14 lg:p-regular-16 border-b hover:text-white cursor-pointer hover:bg-primary-100 p-1 text-gray-500"
                                 style={{ boxSizing: 'border-box' }}>
                                 <td className="min-w-[200px] flex-1 py-4 pr-4 flex items-center gap-2 p-2">
-                                  <Image src={user?.profileUrl} width={24} height={24} alt={user?.username} className="size-10 rounded-full aspect-square"/>
+                                  <Image src={user?.images} width={24} height={24} alt={user?.username} className="size-10 rounded-full aspect-square"/>
                                   {user.username}
                            
                                 </td>
-                                <td className="min-w-[250px] py-4 font-semibold p-2">{user.id}</td>
+                                <td className="min-w-[200px] py-4 font-semibold p-2">{user.id}</td>
                                 
                               </tr>
                             ))}
@@ -221,7 +209,7 @@ const Dashboard = () => {
                </div>
           
                 <div className='flex flex-col'>
-                  <h2 className="text-sm md:text-lg text-dark-100 font-normal my-4 font-semibold">Trips based on interest</h2>
+                  <h2 className="text-sm md:text-lg text-dark-100 my-4 font-semibold">Trips based on interest</h2>
                   <table className="w-full border-collapse border-t">
                     <thead>
                       <tr className="p-medium-14 border-b text-grey-500">
@@ -231,26 +219,26 @@ const Dashboard = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {trips && trips.length === 0 ? (
+                      {trip && trip.length === 0 ? (
                         <tr className="border-b">
                           <td colSpan={5} className="py-4 text-center text-gray-500">
-                            No trips found.
+                            No trip found.
                           </td>
                         </tr>
                       ) : (
                         <>
-                          {trips &&
-                            trips.map((user) => (
+                          {trip &&
+                            trip.slice(0, 3)?.map((t, index) => (
                               <tr
-                                key={user.id}
-                                className="p-regular-14 lg:p-regular-16 border-b hover:text-white cursor-pointer hover:bg-primary-100 p-1"
+                                key={index}
+                                className="p-regular-14 lg:p-regular-16 text-gray-500 border-b hover:text-white cursor-pointer hover:bg-primary-100 p-1 "
                                 style={{ boxSizing: 'border-box' }}>
-                                <td className="min-w-[200px] flex-1 py-4 pr-4 flex items-center gap-2 p-2">
-                                  <Image src={user?.profileUrl} width={24} height={24} alt={user?.username} className="size-10 rounded-full aspect-square"/>
-                                  {user.username}
+                                <td className="min-w-[200px] flex-1 py-4 pr-4 flex items-center gap-2 p-2 tru">
+                                  <Image src={t?.imageUrl} width={24} height={24} alt={t?.name} className="size-10 rounded-full aspect-square"/>
+                                  {t.name.slice(0, 25)}...
                            
                                 </td>
-                                <td className="min-w-[250px] py-4 p-2 text-base">{user.interests}</td>
+                                <td className="min-w-[250px] py-4 p-2 text-base">{t.travelStyle}</td>
                                 
                               </tr>
                             ))}

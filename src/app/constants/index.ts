@@ -23,17 +23,17 @@ export const sidebarItems = [
   {
     imageUrls: ["/assets/images/sample1.jpg"],
     id: 1,
-    name: 'image1'
+    name: 'London, United state'
  },
   {
     imageUrls: ["/assets/images/sample2.jpg"],
     id: 2,
-    name: 'image2'
+    name: 'Barcelona Tour'
  },
   {
     imageUrls: ["/assets/images/sample3.jpg"],
     id: 3,
-    name: 'image2'
+    name: 'Australia Tour'
  },
    ]
 
@@ -41,17 +41,17 @@ export const sidebarItems = [
     {
     imageUrls: ["/assets/images/card-img-1.png"],
     id: 1,
-    name: 'image1'
+    name: 'Australia Tour'
  },
   {
     imageUrls: ["/assets/images/card-img-2.png"],
     id: 2,
-    name: 'image2'
+    name: 'London, United state'
  },
   {
     imageUrls: ["/assets/images/card-img-4.png"],
     id: 3,
-    name: 'image3'
+    name: 'Barcelona Tour'
  }
    ]
   export const allTrips = [{

@@ -1,18 +1,22 @@
 'use client'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { sidebarItems } from '../constants'
 import {usePathname} from "next/navigation"
+import { useAuthStore } from '../store'
+import {LogOut} from 'lucide-react'
 
 const NavItems = () => {
 
     const pathname = usePathname()
-    const user = {
-      name: 'Duru',
-      email: 'durupristine@gmail.com',
-      imageUrl: '/assets/images/david.webp'
-    }
+    // const user = {
+    //   name: 'Duru',
+    //   email: 'durupristine@gmail.com',
+    //   imageUrl: '/assets/images/david.webp'
+    // }
+
+     const {user, logout} = useAuthStore();
 
   return (
     <section className='nav-items bg-white fixed'>
@@ -34,18 +38,15 @@ const NavItems = () => {
             </nav>
 
             <footer className="nav-footer">
-              <Image src={user.imageUrl} width={24} height={24} alt={user.name}/>
+               {user?.profileUrl && <Image src={user?.profileUrl} width={24} height={24} alt={user?.username}/>}
 
               <article>
-                <h2>{user?.name}</h2>
-                <p>{user?.email}</p>
+                <h2>{user?.username ? user?.username : 'User Guest'}</h2>
+                <p>{user?.email  ? user?.email : 'guest@gmail.com'}</p>
               </article>
-              <button onClick={() => {console.log('Logout')}} className="cursor-pointer">
-                <Image src="/assets/icons/logout.svg"
-                  alt="logout"
-                  className="size-6"
-                  width={24}
-                  height={24}
+              <button onClick={() => logout()} className="cursor-pointer">
+                <LogOut 
+                   className="size-9 text-primary-100 hover:bg-gray-50/20 rounded-full bg-white p-1"
                 />
               </button>
             </footer>

@@ -105,7 +105,7 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 }
-
+ /* button-class */
 @layer components {
   .error {
     @apply text-red-500 text-base font-medium text-center;
@@ -140,7 +140,7 @@
       @apply text-sm md:text-lg font-normal truncate text-gray-100;
     }
   }
-/* trip grid */
+/* tripCard-pill*/
   .trip {
     @apply flex flex-col gap-10 pb-20;
     section {
@@ -234,7 +234,7 @@
         @apply grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-7 mt-1;
       }
     }
-
+/* p-18-semibold */
     .visit {
       @apply flex flex-col gap-5;
 
@@ -480,6 +480,7 @@
   .p-18-regular {
     @apply text-[14px] md:text-[18px] leading-[14px] md:leading-[16px] font-normal;
   }
+  /*auth  */
   .p-16-semibold {
     @apply text-sm md:text-base font-semibold;
   }

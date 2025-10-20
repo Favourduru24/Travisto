@@ -8,19 +8,35 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import CheckOutButton from './CheckOutButton'
 import { useAuthStore } from '@/app/store'
+import Pagination from '@/app/components/Pagination'
+import { Loader2 } from 'lucide-react'
 
-const TravelDetailPage = ({id}: any) => {
+const TravelDetailPage = ({id, page, urlParamName}: any, ) => {
 
     const [tripDetail, setTripDetail] = useState<Trip>([])
-    const [allTrips, setAllTrips] = useState<any[]>([])
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState<string|null>(null)
+   const [allTrips, setAllTrips] = useState<{ data: any[], meta: any }>({ data: [], meta: {} });
     const {user} = useAuthStore()
+    const limit = 4
  
     useEffect(() => {
+
        if(!id) return
 
        const fetchTripDetail = async () => {
-         const res = await getTripById(id)
-         setTripDetail(res)
+           setLoading(true)
+           setError(null)
+          try {
+          const res = await getTripById(id)
+          setTripDetail(res)
+          } catch (error) {
+            setError('Something went wrong fetching this trip')
+            alert('Something went wrong fetching this trip')
+          } finally{
+          setLoading(false)
+          }
+        
        }
 
        fetchTripDetail()
@@ -29,20 +45,41 @@ const TravelDetailPage = ({id}: any) => {
     
         useEffect(() => {
             const fetchAllTrips = async () => {
-              const res = await getAllTrips();
+                setError(null)
+              try {
+                const res = await getAllTrips({page, limit});
               setAllTrips(res);
+              } catch(err) {
+                 setError('Something went wronh fetching related trip')
+               }
+              
             };
         
             fetchAllTrips();
-          }, []);
+          }, [page, limit]);
     
-          console.log({allTrips})
+           if(loading) {
+                    return (
+                      <div className="flex inset-0 fixed items-center justify-center bg-gray-50/50 z-50">
+                          <Loader2 className="w-16 h-16 animate-spin text-primary-100"/>
+                      </div>
+                    )
+                  }
 
-    
-    console.log({id})
-    console.log({tripDetail})
-
-    const {name, duration, itinerary, travelStyle, budget, interests, estimatedPrice, groupType, bestTimeToVisit, description, weatherInfo, country, images} = tripDetail || {}
+    const {
+      name,
+      duration,
+      itinerary,
+      travelStyle,
+      budget,
+      interests,
+      estimatedPrice,
+      groupType,
+      bestTimeToVisit,
+      description,
+      weatherInfo,
+      country,
+      images} = tripDetail || {}
 
     const pillItems = [
        {text: travelStyle, bg: '!bg-pink-50 !text-pink-500'},
@@ -165,6 +202,7 @@ const TravelDetailPage = ({id}: any) => {
              ))}
 
               <MapBox selectedCountry={country}/>
+              <p className='font-medium text-red-400 text-lg text-center'>{error}</p>
 
              <CheckOutButton trip={tripDetail} userId={user?.userId}/>
       </section>
@@ -173,18 +211,24 @@ const TravelDetailPage = ({id}: any) => {
                 <h2 className='p-24-semibold text-dark-100'>Popular Trips</h2>
 
                 <div className="trip-grid">
-                                   {allTrips.map(({id, name, images, itinerary, interests, estimatedPrice, travelStyle}) => (
+                                   {allTrips.data.length > 0 ? allTrips.data.map(({id, name, images, itinerary, interests, estimatedPrice, travelStyle}) => (
                                                                                                              <TripCard 
-                                                                                                             key={id}
-                                                                                                             id={id.toString()}
-                                                                                                   name={name}
-                                                                                                             imageUrl={images[0]}  
-                                                                                                             location={itinerary?.[0]?.location ?? ''}
-                                                                                                             tags={[interests, travelStyle]}
-                                                                                                             price={estimatedPrice}
-                                                                                                         />
-                                                                                                                 ))}
+        key={id}
+        id={id.toString()}
+        name={name}
+        imageUrl={images[0]}  
+        location={itinerary?.[0]?.location ?? ''}
+         tags={[interests, travelStyle]}
+         price={estimatedPrice}
+        />
+                                                                                                       )) : (
+        <div className="flex flex-col gap-5 w-full justify-center">
+              <p className="text-lg font-medium text-red-400">{error}</p>
+              <p className="text-primary-100">No worries reload and try again!</p>
+        </div>
+       )}
  </div>
+     {allTrips.meta?.totalPage > 1 && <Pagination page={page} urlParamName={urlParamName} totalPages={allTrips.meta?.totalPage}/>}
              </section>
     </div>
   )

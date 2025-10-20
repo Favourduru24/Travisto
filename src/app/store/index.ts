@@ -18,7 +18,9 @@ interface AuthState {
   user: User | null;
   token: string | null;
   hasHydrated: boolean;
-  setUser: (user: User, token: string) => void;
+  setUser: (user: User, token : string) => void;
+  role: string | null;
+  setRole: (role: string) => void;
   logout: () => void;
   setHasHydrated: (state: boolean) => void;
 }
@@ -29,16 +31,18 @@ export const useAuthStore = create<AuthState>()(
     (set) => ({
       user: null,
       token: null,
+      role: null,
       hasHydrated: false,
-
       // Sets the user + token in state
       setUser: (user, token) => {
         set({ user, token });
       },
-
+        setRole: (role) => {
+         set({role})
+       },
       // Logs out the user (clears store)
       logout: () => {
-        set({ user: null, token: null });
+        set({ user: null, token: null, role: null});
       },
 
       // Used internally for hydration state
@@ -49,12 +53,12 @@ export const useAuthStore = create<AuthState>()(
     {
       name: "auth-storage", // key in localStorage
       onRehydrateStorage: () => (state) => {
-        // Called once hydration finishes
         state?.setHasHydrated(true);
       },
       partialize: (state) => ({
         user: state.user,
         token: state.token,
+        role: state.role
       }),
     }
   )

@@ -17,7 +17,6 @@ const MapBox = ({ selectedCountry }: MapBoxProps) => {
       f.properties?.admin?.toLowerCase() === selectedCountry?.toLowerCase()
   )
 
-  // console.log({selectedFeature})
 
   // Get the center of that country's coordinates
   const center = selectedFeature

@@ -36,13 +36,12 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export function Chart({data, keys, num}) {
+export function Chart({data, keys, num, label, title1, title2}) {
 
-  console.log(data)
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Bar Chart - Label</CardTitle>
+        <CardTitle>{label}</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
       <CardContent>
@@ -60,7 +59,7 @@ export function Chart({data, keys, num}) {
               tickLine={false}
               tickMargin={10}
               axisLine={false}
-              tickFormatter={(value) => value?.slice(0, 3)}
+              tickFormatter={(value) => value?.slice(0, 9)}
             />
             <ChartTooltip
               cursor={false}
@@ -79,10 +78,10 @@ export function Chart({data, keys, num}) {
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="flex gap-2 leading-none font-medium">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+          {title1} <TrendingUp className="h-4 w-4" />
         </div>
         <div className="text-muted-foreground leading-none">
-          Showing total visitors for the last 6 months
+          {title2}
         </div>
       </CardFooter>
     </Card>

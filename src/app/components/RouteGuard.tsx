@@ -5,16 +5,16 @@ import { useRouter } from "next/navigation"
 
 const RouteGuard = ({children}) => {
 
-    const {token} = useAuthStore()
+    const {token, role} = useAuthStore()
     const router = useRouter()
         
        useEffect(() => {
           
-          if(token) {
-               router.replace('/sign-in') 
+          if(!token || role !== 'ADMIN') {
+               router.push('/sign-in') 
           }
           
-       }, [token])
+       }, [token, role])
 
   return (
     <>

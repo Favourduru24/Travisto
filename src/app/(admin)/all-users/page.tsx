@@ -2,6 +2,7 @@
 import { Header} from '@/app/components'
 import { Chart } from '@/app/components/Chart'
 import { getAllUsers } from '@/app/service/trip-service'
+import { Loader2 } from 'lucide-react'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
@@ -9,43 +10,35 @@ import { useEffect, useState } from 'react'
 const AllUser = () => {
 
     const [allUsers, setAllUsers] = useState<any[]>([])
-    const users = [
-        {
-        id: 1,
-        username: 'Duru Pristine',
-        email: 'durupristine@gmail.com',
-        status: 'user',
-        time: 'May 2nd 2025',
-        profileUrl: '/assets/images/david.webp'
-    },
-        {
-        id: 2,
-        username: 'Hart Kelvin',
-        email: 'kelvinhart@gmail.com',
-        status: 'agent',
-        time: 'May 22nd 2025',
-        profileUrl: '/assets/images/david.webp'
-    },
-        {
-        id: 3,
-        username: 'Duru Favour',
-        email: 'durufavour@gmail.com',
-        status: 'admin',
-        time: 'May 3rd 2025',
-        profileUrl: '/assets/images/david.webp'
-    },
-]
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState<string|null>(null)
 
   useEffect(() => {
           const fetchAllTrips = async () => {
-            const res = await getAllUsers();
+              setLoading(true)
+              setError(null)
+            try {
+             const res = await getAllUsers();
             setAllUsers(res);
+            } catch(err) {
+               setError('Something went wrong fetching users.')
+               console.error('error fetching user')
+            } finally{
+            setLoading(false)
+            }
+           
           };
       
           fetchAllTrips();
         }, []);
   
-        console.log({allUsers})
+        if(loading) {
+           return (
+              <div className="flex inset-0 fixed items-center justify-center bg-gray-50/50 z-50">
+                 <Loader2 className="w-16 h-16 animate-spin text-primary-100"/>
+             </div>
+           )
+              }
 
    return (
     <section className="all-users wrapper">
@@ -68,7 +61,8 @@ const AllUser = () => {
             {allUsers && allUsers.length === 0 ? (
               <tr className="border-b">
                 <td colSpan={5} className="py-4 text-center text-gray-500">
-                  No allUsers found.
+                  No  Users found.
+                  <p className="font-medium text-red-400 text-sm">{error}</p>
                 </td>
               </tr>
             ) : (
@@ -89,8 +83,8 @@ const AllUser = () => {
                       <td className="min-w-[100px] py-4 truncate text-sm">
                         {user.createdAt}
                       </td>
-                      <td className={`min-w-[100px] py-4 text-right p-2 font-semibold text-sm ${user.status === 'user' ? "text-pink-500"  : user.status === 'admin' ? 'text-purple-500' : "text-gray-500"}`}>
-                        <p className={`${user.status === 'agent' ? "text-pink-500"  : user.status === 'user' ? 'text-gray-500' : "text-green-500"}`}>{user.status}</p>
+                      <td className={`min-w-[100px] py-4 text-right p-2 font-semibold text-sm ${user.role === 'user' ? "text-pink-500"  : user.role === 'admin' ? 'text-purple-500' : "text-gray-500"}`}>
+                        <p className={`${user.role === 'agent' ? "text-pink-500"  : user.role === 'user' ? 'text-gray-500' : "text-green-500"}`}>{user.role.toLowerCase()}</p>
                       </td>                        
                     </tr>
                   ))}
