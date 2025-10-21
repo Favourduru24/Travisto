@@ -9,6 +9,7 @@ import { updateUser } from "@/app/service/user-service"
 import { useRouter } from "next/navigation"
 
 const Role = () => {
+  const API_URL='https://travel-agency-backend-t9fi.onrender.com'
   const userRoles = [
     {
       role: 'ADMIN',
@@ -45,7 +46,7 @@ const Role = () => {
    
        const fetchUser = async () => {
          try {
-           const res = await fetch(`${process.env.API_URL}/choose-role/auth/me`, {
+           const res = await fetch(`${API_URL}/choose-role/auth/me`, {
              headers: { Authorization: `Bearer ${token}` },
            });
 
