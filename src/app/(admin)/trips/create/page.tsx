@@ -1,5 +1,7 @@
 'use client'
-import { ComboBox, Header, MapBox } from "@/app/components" 
+import dynamic from "next/dynamic";
+import { ComboBox, Header } from "@/app/components" 
+const MapBox = dynamic(() => import("@/app/components/MapBox"), { ssr: false });
 import { comboBoxItems, selectItems } from "@/app/constants"
 import { formatKey } from "@/app/lib/utils"
 import { useState, useEffect} from "react"
