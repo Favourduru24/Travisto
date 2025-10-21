@@ -1,8 +1,7 @@
 "use client"
-import { useAuthStore } from "../store";
 import axios from "axios"
 
-const API_URL = process.env.API_URL || 'http://localhost:4000';
+const API_URL = process.env.API_URL || 'https://travel-agency-backend-t9fi.onrender.com';
 
 declare interface TripFormData {
   country: string;
