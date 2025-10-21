@@ -32,7 +32,8 @@ const Role = () => {
  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-        
+         if (typeof window === "undefined") return;
+         
        const urlParams = new URLSearchParams(window.location.search);
        const token = urlParams.get("token");
    
