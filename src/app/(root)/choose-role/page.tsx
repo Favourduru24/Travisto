@@ -45,7 +45,7 @@ const Role = () => {
    
        const fetchUser = async () => {
          try {
-           const res = await fetch("http://localhost:4000/choose-role/auth/me", {
+           const res = await fetch(`${process.env.API_URL}/choose-role/auth/me`, {
              headers: { Authorization: `Bearer ${token}` },
            });
 
