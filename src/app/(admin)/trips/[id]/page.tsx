@@ -7,10 +7,9 @@ const Page = async (props: any) => {
 
  const page = Number(searchParams?.page) || 1
 
- const urlParamName = 'pages'
 
   return (
-    <TripsDetailPage id={id} page={page} urlParamName={urlParamName}/>
+    <TripsDetailPage id={id} page={page}/>
      )
     }
 
