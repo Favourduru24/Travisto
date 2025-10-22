@@ -22,6 +22,7 @@ const RootPage = ({page, urlParamName}) => {
      const limit = 8;
 
    const [allTrips, setAllTrips] = useState<{ data: any[], meta: any }>({ data: [], meta: {} });
+   const [allBentoTrip, setAllBentoTrip] = useState<{ data: any[], meta: any }>({ data: [], meta: {} });
 
     useEffect(() => {
         
@@ -41,6 +42,25 @@ const RootPage = ({page, urlParamName}) => {
         
         fetchAllTrips();
       }, [page, limit]);
+
+      useEffect(() => {
+        
+          const fetchAllBentoTrips = async () => {
+             setLoading(true)
+             setError(null)
+            try { 
+          const res = await getAllTrips();
+          setAllBentoTrip(res);
+            } catch(err) {
+            setError('Something went wrong fetching trips')
+            console.error("Failed to fetch trips:", err);
+           } finally{
+                setLoading(false)
+          }
+        };
+        
+        fetchAllBentoTrips();
+      }, []);
 
       if(loading) {
             return (
@@ -113,7 +133,7 @@ const RootPage = ({page, urlParamName}) => {
                <div className="grid md:grid-cols-3 grid-cols-1 gap-4">
   {/* Left big section */}
   <section className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 md:grid-rows-2 gap-5 mt-1 py-5">
-  {allTrips.data.length > 0 ? allTrips?.data.slice(0, 3)?.map(({ images, id, name, description, estimatedPrice }, tripIndex) => (
+  {allBentoTrip.data.length > 0 ? allBentoTrip?.data.slice(0, 3)?.map(({ images, id, name, description, estimatedPrice }, tripIndex) => (
     <Link 
       href={`/travel/${id}`}
       key={id}
@@ -157,7 +177,7 @@ const RootPage = ({page, urlParamName}) => {
 
   {/* Right tall section */}
   <section className="md:col-span-1 grid grid-cols-1 md:grid-rows-2 gap-5 mt-1 py-5">
-    {allTrips.data.length > 0 ? allTrips?.data?.slice(0, 3)?.map(({ images, id, name, interests, description, estimatedPrice }, i) => (
+    {allBentoTrip.data.length > 0 ? allBentoTrip?.data?.slice(0, 3)?.map(({ images, id, name, interests, description, estimatedPrice }, i) => (
       <Link key={id} className="relative rounded-xl overflow-hidden h-[210px] md:col-span-1" href={`/travel/${id}`}>
         <img
           src={images[1]?.url}
