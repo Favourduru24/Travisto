@@ -49,7 +49,7 @@ const RootPage = ({page, urlParamName}) => {
              setLoading(true)
              setError(null)
             try { 
-          const res = await getAllTrips();
+          const res = await getAllTrips({limit});
           setAllBentoTrip(res);
             } catch(err) {
             setError('Something went wrong fetching trips')
@@ -60,7 +60,7 @@ const RootPage = ({page, urlParamName}) => {
         };
         
         fetchAllBentoTrips();
-      }, []);
+      }, [limit]);
 
       if(loading) {
             return (
