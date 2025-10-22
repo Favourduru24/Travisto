@@ -5,7 +5,6 @@ const Page = async (props) => {
 
     const page = Number(searchParams?.page) || 1
 
-    const urlParamName = 'pages'
     
   return (
     <TripMainPage page={page}/>

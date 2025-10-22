@@ -15,7 +15,7 @@ const TripsDetailPage = ({id, urlParamName, page}) => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string|null>(null)
     const [allTrips, setAllTrips] = useState<{ data: any[], meta: any }>({ data: [], meta: {} });
-
+    const limit = 6
 // groupType
     useEffect(() => {
        if(!id) return
@@ -41,7 +41,7 @@ const TripsDetailPage = ({id, urlParamName, page}) => {
           const fetchAllTrips = async () => {
                 setError(null)
                 try {
-              const res = await getAllTrips();
+              const res = await getAllTrips({page, limit});
               setAllTrips(res);
               
             } catch (error) {
@@ -50,7 +50,7 @@ const TripsDetailPage = ({id, urlParamName, page}) => {
           };
             
             fetchAllTrips();
-          }, []);
+          }, [limit, page]);
     
 
     
