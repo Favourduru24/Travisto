@@ -38,19 +38,24 @@ const TripsDetailPage = ({id, urlParamName, page}) => {
 
     
         useEffect(() => {
-          const fetchAllTrips = async () => {
-                setError(null)
-                try {
-              const res = await getAllTrips({page, limit});
-              setAllTrips(res);
-              
-            } catch (error) {
-               setError('Something went wrong fetching related trips')
-            }
-          };
+              const fetchAllTrips = async () => {
+                setLoading(true);   // start loading
+                setError(null);     // reset errors
             
-            fetchAllTrips();
-          }, [limit, page]);
+                try {
+                  const res = await getAllTrips({ limit, page });
+                  setAllTrips(res);
+                } catch (err: any) {
+                  console.error("Failed to fetch trips:", err);
+                  setError("Something went wrong while fetching trips.");
+                } finally {
+                  setLoading(false); // stop loading
+                }
+              };
+            
+              fetchAllTrips();
+            }, [limit, page]);
+
     
 
     
@@ -209,22 +214,22 @@ const TripsDetailPage = ({id, urlParamName, page}) => {
                 <h2 className='p-24-semibold text-dark-100'>Popular Trips</h2>
 
                 <div className="trip-grid">
-                                    {allTrips.data.length > 0 ? allTrips?.data.map(({id, name, images, itinerary, interests, estimatedPrice, travelStyle}) => (
-                                            <TripCard 
-                                            key={id}
-                                            id={id.toString()}
-                                            name={name}
-                                            imageUrl={images[0]}  
-                                            location={itinerary?.[0]?.location ?? ''}
-                                            tags={[interests, travelStyle]}
-                                            price={estimatedPrice}
-                                        />
-                                                  )) : (
-                                            <div className="flex flex-col gap-5 w-full justify-center">
-                                                  <p className="text-lg font-medium text-red-400">{error}</p>
-                                                  <p className="text-primary-100">No worries reload and try again!</p>
-                                            </div>
-                                           )}
+                                    {allTrips.data.length ? allTrips.data.map(({id, name, images, itinerary, interests, estimatedPrice, travelStyle}) => (
+                        <TripCard 
+                        key={id}
+                        id={id.toString()}
+                        name={name}
+                        imageUrl={images[0]}  
+                        location={itinerary?.[0]?.location ?? ''}
+                        tags={[interests, travelStyle]}
+                        price={estimatedPrice}
+                    />
+                            )) :  (
+                  <div className="flex flex-col gap-2 w-full justify-center">
+                        <p className="text-sm font-semibold text-red-400">No Trips Avalable!</p>
+                        <p className="text-primary-100 text-xs">No worries reload and try again!</p>
+                  </div>
+                  )}
                                 </div>
                                  {allTrips.meta?.totalPage > 1 && <Pagination page={page} urlParamName={urlParamName} totalPages={allTrips.meta?.totalPage}/>}
              </section>
