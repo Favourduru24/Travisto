@@ -70,7 +70,7 @@ const handleUpdateUserRole = async () => {
   try {
     const response = await updateUser({ role: selectedRole }, user.userId)
     setRole(selectedRole)
-    if (response) router.push('/')
+    if (response) router.push(`${selectedRole === 'ADMIN' ? '/dashboard' : '/'}`)
   } catch (error) {
     console.error("Error updating user role:", error)
   } finally {
