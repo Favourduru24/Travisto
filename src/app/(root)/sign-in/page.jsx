@@ -19,7 +19,7 @@ const SignIn = () => {
          }, [token])
 
   const handleLogin = () => {
-  window.location.href = "https://travel-agency-backend-t9fi.onrender.com/choose-role/auth/google/login";
+  window.location.href = "https://travel-agency-backend-2jbymfu6p-starks-projects-f3f5ee78.vercel.app/choose-role/auth/google/login";
 };
 
    return (

@@ -1,7 +1,7 @@
 "use client"
 import axios from "axios"
 
-const API_URL = process.env.API_URL || 'https://travel-agency-backend-t9fi.onrender.com';
+const API_URL = process.env.API_URL || 'https://travel-agency-backend-2jbymfu6p-starks-projects-f3f5ee78.vercel.app';
 
 declare interface TripFormData {
   country: string;
