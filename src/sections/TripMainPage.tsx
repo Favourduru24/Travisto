@@ -15,7 +15,6 @@ const Trips = ({page, urlParamName}) => {
 
     useEffect(() => {
       const fetchAllTrips = async () => {
-        setLoading(true);   // start loading
         setError(null);     // reset errors
     
         try {
@@ -24,9 +23,7 @@ const Trips = ({page, urlParamName}) => {
         } catch (err: any) {
           console.error("Failed to fetch trips:", err);
           setError("Something went wrong while fetching trips.");
-        } finally {
-          setLoading(false); // stop loading
-        }
+        } 
       };
     
       fetchAllTrips();

@@ -27,7 +27,6 @@ const RootPage = ({page, urlParamName}) => {
     useEffect(() => {
         
           const fetchAllTrips = async () => {
-             setLoading(true)
              setError(null)
             try { 
           const res = await getAllTrips({ page, limit });
@@ -35,9 +34,7 @@ const RootPage = ({page, urlParamName}) => {
             } catch(err) {
             setError('Something went wrong fetching trips')
             console.error("Failed to fetch trips:", err);
-           } finally{
-                setLoading(false)
-          }
+           }
         };
         
         fetchAllTrips();
